@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>POETIKS — פה־אתיקה | עידו נעים</title>
+<meta property="og:title" content="POETIKS — פה־אתיקה">
+<meta property="og:description" content="פרויקט גמר, עידו נעים — בית הספר לאדריכלות ע״ש עזריאלי, אוניברסיטת תל אביב">
+<meta property="og:image" content="s01.webp">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body { height:100%; background:#0a0a0a; overflow:hidden; font-family:system-ui,-apple-system,"Segoe UI",sans-serif; }
+  #stage-wrap { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; }
+  #stage { position:relative; aspect-ratio:16/9; width:100vw; max-height:100vh; max-width:calc(100vh*16/9); background:#fff;
+           box-shadow:0 0 60px rgba(0,0,0,.8); user-select:none; }
+  .slide { position:absolute; inset:0; opacity:0; transition:opacity .28s ease; pointer-events:none; }
+  .slide.active { opacity:1; pointer-events:auto; }
+  .slide img.bg { position:absolute; inset:0; width:100%; height:100%; }
+  .slide video { position:absolute; object-fit:cover; }
+  .slide video.unstarted { display:none; }
+  .hud { position:fixed; z-index:30; transition:opacity .4s; }
+  .hud.hidden { opacity:0; pointer-events:none; }
+  #counter { left:50%; transform:translateX(-50%); bottom:14px; color:#bbb; font-size:13px; letter-spacing:.12em;
+             background:rgba(10,10,10,.55); padding:6px 14px; border-radius:20px; direction:ltr; }
+  .navbtn { top:50%; transform:translateY(-50%); width:46px; height:82px; border:none; cursor:pointer;
+            background:rgba(10,10,10,.35); color:#eee; font-size:26px; border-radius:10px;
+            display:flex; align-items:center; justify-content:center; backdrop-filter:blur(4px); }
+  .navbtn:hover { background:rgba(10,10,10,.65); }
+  #nextBtn { right:10px; } #prevBtn { left:10px; }
+  #fsBtn { top:14px; right:14px; width:40px; height:40px; border:none; border-radius:9px; cursor:pointer;
+           background:rgba(10,10,10,.45); color:#ddd; font-size:17px; backdrop-filter:blur(4px); }
+  #title-tag { top:20px; left:20px; color:#888; font-size:12px; letter-spacing:.22em; direction:ltr; }
+  #hint { bottom:52px; left:50%; transform:translateX(-50%); color:#777; font-size:12px; direction:rtl;
+          background:rgba(10,10,10,.5); padding:5px 12px; border-radius:14px; }
+  .playbtn { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:92px; height:92px;
+             border-radius:50%; border:none; cursor:pointer; background:rgba(10,10,10,.72); color:#fff;
+             display:flex; align-items:center; justify-content:center; backdrop-filter:blur(3px); z-index:5;
+             transition:transform .15s, background .15s; }
+  .playbtn:hover { transform:translate(-50%,-50%) scale(1.07); background:rgba(10,10,10,.9); }
+  .playbtn svg { margin-left:6px; }
+  @media (max-width:700px){ .navbtn{ width:34px; height:60px; font-size:20px; } #hint{ display:none; } }
+</style>
+</head>
+<body>
+<div id="stage-wrap"><div id="stage"></div></div>
+<div class="hud" id="title-tag">POETIKS</div>
+<button class="hud navbtn" id="prevBtn" aria-label="הקודם"><svg width="22" height="34" viewBox="0 0 24 40" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"><path d="M18 4 L6 20 L18 36"/></svg></button>
+<button class="hud navbtn" id="nextBtn" aria-label="הבא"><svg width="22" height="34" viewBox="0 0 24 40" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"><path d="M6 4 L18 20 L6 36"/></svg></button>
+<button class="hud" id="fsBtn" aria-label="מסך מלא">⛶</button>
+<div class="hud" id="counter">1 / 37</div>
+<div class="hud" id="hint">‏חצים / רווח למעבר בין שקפים</div>
+<script src="hls.min.js"></script>
+<script>
+const N = 37;
+// videos: slide -> {src, x,y,w,h (%), mode: 'loop' (autoplay muted) | 'click' (poster + play, sound)}
+const VIDEOS = {
+  19: {src:'media1.mp4', x:0,   y:0,   w:100,   h:100,   mode:'loop'},
+  20: {src:'media2.mp4', x:0,   y:0,   w:100,   h:100,   mode:'loop'},
+  21: {src:'media3.mp4', x:23.85, y:23.04, w:52.31, h:60.45, mode:'loop'},
+  28: {src:'media4.m3u8', x:0,   y:0,   w:100,   h:100,   mode:'click'},
+  29: {src:'media5.m3u8', x:0,   y:0,   w:100,   h:100,   mode:'click'}
+};
+const stage = document.getElementById('stage');
+const slides = [];
+for (let i=1;i<=N;i++){
+  const d = document.createElement('div');
+  d.className='slide'; d.dataset.n=i;
+  const img = document.createElement('img');
+  img.className='bg'; img.loading='lazy'; img.decoding='async';
+  img.src = `s${String(i).padStart(2,'0')}.webp`;
+  img.alt = `שקף ${i}`;
+  d.appendChild(img);
+  if (VIDEOS[i]) {
+    const v = VIDEOS[i];
+    const vid = document.createElement('video');
+    vid.playsInline = true; vid.preload='metadata';
+    if (v.src.endsWith('.m3u8')){
+      if (vid.canPlayType('application/vnd.apple.mpegurl')) { vid.src = v.src; }
+      else if (window.Hls && Hls.isSupported()) { const hls = new Hls({maxBufferLength:20}); hls.loadSource(v.src); hls.attachMedia(vid); }
+      else { vid.src = v.src; }
+    } else { vid.src = v.src; }
+    vid.style.left=v.x+'%'; vid.style.top=v.y+'%'; vid.style.width=v.w+'%'; vid.style.height=v.h+'%';
+    if (v.mode==='loop'){ vid.muted=true; vid.loop=true; }
+    else {
+      vid.controls=true; vid.classList.add('unstarted');
+      const pb=document.createElement('button'); pb.className='playbtn'; pb.setAttribute('aria-label','נגן');
+      pb.innerHTML='<svg width="34" height="34" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>';
+      pb.addEventListener('click',e=>{ e.stopPropagation(); pb.style.display='none'; vid.classList.remove('unstarted'); vid.play(); });
+      vid.addEventListener('ended',()=>{ pb.style.display='flex'; });
+      d.appendChild(vid); d.appendChild(pb);
+      d._playBtn = pb;
+    }
+    if (!d.contains(vid)) d.appendChild(vid);
+    d._video = vid;
+  }
+  stage.appendChild(d); slides.push(d);
+}
+let cur = 0;
+function show(n, dirFwd=true){
+  n = Math.max(0, Math.min(N-1, n));
+  if (n===cur && slides[cur].classList.contains('active')) return;
+  const prev = slides[cur];
+  prev.classList.remove('active');
+  if (prev._video){ prev._video.pause(); if(prev._playBtn){ prev._playBtn.style.display='flex'; prev._video.classList.add('unstarted'); } }
+  cur = n;
+  const s = slides[cur];
+  s.classList.add('active');
+  if (s._video){
+    if (VIDEOS[cur+1].mode==='loop'){ s._video.currentTime=0; s._video.play().catch(()=>{}); }
+  }
+  document.getElementById('counter').textContent = `${cur+1} / ${N}`;
+  // preload neighbors
+  [cur+1,cur+2,cur-1].forEach(k=>{ if(k>=0&&k<N){ const im=slides[k].querySelector('img'); im.loading='eager'; }});
+  if (history.replaceState) history.replaceState(null,'','#'+(cur+1));
+}
+function next(){ show(cur+1); } function prevS(){ show(cur-1,false); }
+document.getElementById('nextBtn').addEventListener('click',next);
+document.getElementById('prevBtn').addEventListener('click',prevS);
+document.addEventListener('keydown',e=>{
+  if (['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){ e.preventDefault(); next(); }
+  else if (['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){ e.preventDefault(); prevS(); }
+  else if (e.key==='Home') show(0); else if (e.key==='End') show(N-1);
+  else if (e.key==='f'||e.key==='F') toggleFS();
+});
+// click on stage advances (unless interacting with a video/controls)
+stage.addEventListener('click',e=>{
+  if (e.target.closest('video')||e.target.closest('.playbtn')) return;
+  next();
+});
+window.addEventListener('hashchange',()=>{
+  const k = parseInt(location.hash.slice(1));
+  if (!isNaN(k)) show(k-1);
+});
+// touch swipe
+let tx=null;
+document.addEventListener('touchstart',e=>{ tx=e.touches[0].clientX; },{passive:true});
+document.addEventListener('touchend',e=>{
+  if(tx===null) return; const dx=e.changedTouches[0].clientX-tx; tx=null;
+  if (Math.abs(dx)>45) (dx<0)?next():prevS();
+},{passive:true});
+function toggleFS(){
+  if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>{});
+  else document.exitFullscreen();
+}
+document.getElementById('fsBtn').addEventListener('click',toggleFS);
+// auto-hide HUD
+let hudT;
+function wake(){
+  document.querySelectorAll('.hud').forEach(h=>h.classList.remove('hidden'));
+  clearTimeout(hudT);
+  hudT=setTimeout(()=>document.querySelectorAll('.hud').forEach(h=>{ if(h.id!=='counter') h.classList.add('hidden'); }),2600);
+}
+['mousemove','touchstart','keydown'].forEach(ev=>document.addEventListener(ev,wake,{passive:true}));
+wake();
+// hint fades permanently after first nav
+let hinted=false;
+document.addEventListener('keydown',()=>{ if(!hinted){ document.getElementById('hint').style.display='none'; hinted=true; }},{once:true});
+// start from hash
+const h = parseInt(location.hash.slice(1));
+show(isNaN(h)?0:h-1);
+</script>
+</body>
+</html>
