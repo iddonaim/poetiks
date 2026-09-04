@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>הקלפים · THE SEVENTY · פה־אתיקה</title>
+<meta name="description" content="שבעים קלפי וריאציה — קוביית 42 מ״מ, ארבעה חתכים לכל קלף. C(8,4)=70. פה־אתיקה / POETIKS.">
+<link rel="stylesheet" href="../fonts.css">
+<style>
+:root{
+  --red:#d2232a;
+  --ink:#141414;
+  --paper:#f4f1ea;
+  --sticker:#ffffff;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Arimo',sans-serif;color:var(--ink);background:var(--paper)}
+#chip{position:fixed;top:calc(10px + env(safe-area-inset-top));inset-inline-start:12px;
+  z-index:3;font-family:'Secular One';font-size:17px;background:var(--sticker);
+  border:2px solid var(--ink);padding:3px 10px 4px;transform:rotate(-2deg);
+  box-shadow:3px 3px 0 rgba(20,20,20,.85);text-decoration:none;color:var(--ink)}
+#chip:hover,#chip:focus-visible{background:var(--red);color:#fff}
+#chip:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+header{max-width:980px;margin:0 auto;padding:calc(64px + env(safe-area-inset-top)) 18px 8px;
+  display:flex;justify-content:center}
+.sticker{background:var(--sticker);max-width:440px;width:100%;
+  padding:20px 22px 22px;border:2px solid var(--ink);
+  box-shadow:7px 8px 0 rgba(20,20,20,.85);transform:rotate(-1.4deg);position:relative}
+.sticker h1{font-family:'Rubik';font-weight:900;font-size:clamp(24px,6.5vw,30px);
+  line-height:1.15;letter-spacing:-0.01em;text-wrap:balance}
+.sticker h1 .u{background:linear-gradient(transparent 62%,rgba(210,35,42,.4) 62%)}
+.sticker p{font-size:15.5px;line-height:1.5;margin-top:8px}
+.sticker .en{direction:ltr;text-align:left;font-size:11.5px;color:#6f6a60;
+  margin-top:10px;letter-spacing:.02em;line-height:1.4}
+.sticker::before{content:'';position:absolute;top:-24px;inset-inline-start:30px;
+  width:38px;height:26px;
+  background:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 38 26%22><path d=%22M4,24 C10,14 20,6 35,3%22 fill=%22none%22 stroke=%22%23d2232a%22 stroke-width=%225%22 stroke-linecap=%22round%22/></svg>') no-repeat center/contain}
+.grid{max-width:1180px;margin:0 auto;padding:26px 16px 10px;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+.grid img{width:100%;aspect-ratio:1080/800;display:block;background:var(--sticker);
+  border:2px solid var(--ink);box-shadow:4px 4px 0 rgba(20,20,20,.85)}
+.grid img:nth-child(odd){transform:rotate(-.4deg)}
+.grid img:nth-child(even){transform:rotate(.35deg)}
+footer{max-width:1180px;margin:0 auto;padding:18px 16px calc(40px + env(safe-area-inset-bottom));
+  display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center}
+footer a{font-family:'Rubik';font-weight:700;font-size:14px;color:var(--ink);
+  text-decoration:none;border:2px solid var(--ink);background:var(--sticker);
+  padding:8px 12px;box-shadow:3px 3px 0 rgba(20,20,20,.85)}
+footer a:hover,footer a:focus-visible{background:var(--red);color:#fff}
+footer a:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.foot{width:100%;text-align:center;margin-top:16px;padding-top:10px;
+  border-top:1.5px solid #d8d3c8;font-size:11px;color:#6f6a60}
+</style>
+</head>
+<body>
+
+<a id="chip" href="../">פה־אתיקה</a>
+
+<header>
+  <div class="sticker">
+    <h1>שבעים פנים לקובייה. <span class="u">כל השבעים.</span></h1>
+    <p>קובייה אחת של 42 מ״מ, שמונה חתכים אפשריים, ארבעה בכל וריאציה. <bdi dir="ltr">C(8,4)=70</bdi>. על כל קלף — הסימון של החתכים שעשו אותו.</p>
+    <p class="en" lang="en">The Seventy — variation cards · one 42mm cuboid · four boolean cuts each</p>
+  </div>
+</header>
+
+<main class="grid">
+</main>
+
+<footer>
+  <a href="../">חזרה למפה</a>
+  <a href="https://cuboidstudio.vercel.app">לאפליקציה</a>
+  <a href="https://memes.iddonaim.com/gallery">לגלריה</a>
+  <div class="foot">פה־אתיקה · POETIKS · עידו נעים · B.Arch, TAU 2026</div>
+</footer>
+
+<script>
+(function(){
+  var grid=document.querySelector('.grid');
+  for(var i=0;i<70;i++){
+    var n=(i<10?'0':'')+i;
+    var img=document.createElement('img');
+    img.src='../assets/cards/V-'+n+'.svg';
+    img.alt='קלף וריאציה V-'+n;
+    img.loading='lazy';
+    grid.appendChild(img);
+  }
+})();
+</script>
+</body>
+</html>
