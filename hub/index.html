@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<!--
+THESIS: The hub IS the act of explaining — the project map gets annotated as a meme
+(red marker circles, arrows, deadpan captions) while you scroll; it refuses the
+category default of a stacked link-card list.
+OWN-WORLD: Marker red (#d2232a) strokes over the hand-drawn map's own paper; white
+sticker cards with hard offset shadows and slight rotation; Hebrew display in Secular
+One, caption headlines Rubik 900, body Arimo, Latin display Anton. With all content
+removed you'd still see: a wandering camera over a drawn map being scribbled on.
+STORY: A stranger scans the shirt QR → title over the living map → SITE → STORY TRAILER
+→ PLATFORM → GEOMETRY → THE SEVENTY → THEORY → CUBOID STUDIO → SITE → finale.
+The camera returns to the fully-explained map with follow/contact.
+MAP SURFACE: map_alive.mp4 remains alive behind the entire scroll journey; the
+static map is only its loading and reduced-motion fallback.
+FIRST VIEWPORT: Full-bleed animated map. Centered white sticker:
+פה־אתיקה huge, POETIKS in Anton beneath, one honest subtitle line, deadpan scroll cue
+at bottom. No nav, no cards.
+FORM: Annotated-map meme (user-steered re-roll into meme world; replaces assigned
+game world-select, seed key 82c6f542). Staging: scroll-driven camera + self-drawing
+marker strokes. Hebrew captions are DRAFTS pending owner approval.
+-->
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>פה־אתיקה · POETIKS</title>
+<meta name="description" content="פה־אתיקה: תזה בארכיטקטורה שלוקחת ממים ברצינות. B.Arch thesis, TAU 2026.">
+<link rel="stylesheet" href="fonts.css">
+<style>
+:root{
+  --red:#d2232a;
+  --ink:#141414;
+  --paper:#f4f1ea;
+  --sticker:#ffffff;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Arimo',sans-serif;color:var(--ink);background:var(--paper);
+  overflow-x:hidden;
+}
+/* ---------- fixed stage ---------- */
+#stage{position:fixed;inset:0;overflow:hidden;background:var(--paper)}
+#world{position:absolute;left:0;top:0;width:1220px;height:818px;
+  transform-origin:0 0;will-change:transform;
+  transition:transform 1.1s cubic-bezier(.22,.9,.3,1)}
+#world img.map{position:absolute;inset:0;width:1220px;height:818px;display:block;
+  box-shadow:0 5px 26px rgba(20,20,20,.2)}
+#mapvid{position:absolute;left:-176px;top:-33px;width:1572px;height:884px;
+  max-width:none;object-fit:fill;display:block;pointer-events:none}
+#anno{position:absolute;inset:0;width:1220px;height:818px;overflow:visible}
+#anno path{fill:none;stroke:var(--red);stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:var(--len) var(--len);stroke-dashoffset:var(--len);
+  transition:stroke-dashoffset 1s cubic-bezier(.5,0,.2,1)}
+#anno g.on path{stroke-dashoffset:0}
+#anno g.on path.p2{transition-delay:.45s}
+@media (prefers-reduced-motion:reduce){
+  #anno path{transition:none;stroke-dashoffset:0}
+  #anno g{opacity:0}
+  #anno g.on{opacity:1}
+  #world{transition:none}
+  #mapvid{display:none}
+}
+/* ---------- scroll sections ---------- */
+main{position:relative;z-index:2}
+section{min-height:118vh;min-height:118svh;display:flex;align-items:flex-end;
+  justify-content:center;padding:0 14px calc(30px + env(safe-area-inset-bottom));
+  pointer-events:none}
+section#s-title{align-items:center;min-height:100vh;min-height:100svh;position:relative}
+section#s-end{min-height:130vh;min-height:130svh}
+/* ---------- stickers ---------- */
+.sticker{
+  pointer-events:auto;background:var(--sticker);max-width:420px;width:100%;
+  padding:18px 20px 20px;border:2px solid var(--ink);
+  box-shadow:7px 8px 0 rgba(20,20,20,.85);
+  transform:rotate(-1.4deg) translateY(26px);opacity:0;
+  transition:opacity .5s ease-out,transform .6s cubic-bezier(.16,1,.3,1)}
+section.on .sticker{opacity:1;transform:rotate(-1.4deg) translateY(0)}
+section:nth-of-type(even) .sticker{transform:rotate(1.2deg) translateY(26px)}
+section:nth-of-type(even).on .sticker{transform:rotate(1.2deg) translateY(0)}
+.sticker{position:relative}
+.sticker::before{content:'';position:absolute;top:-24px;inset-inline-start:30px;
+  width:38px;height:26px;
+  background:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 38 26%22><path d=%22M4,24 C10,14 20,6 35,3%22 fill=%22none%22 stroke=%22%23d2232a%22 stroke-width=%225%22 stroke-linecap=%22round%22/></svg>') no-repeat center/contain}
+#s-title .sticker::before{display:none}
+.sticker h2{font-family:'Rubik';font-weight:900;font-size:clamp(22px,6vw,28px);
+  line-height:1.15;letter-spacing:-0.01em;text-wrap:balance}
+.sticker h2 .u{background:linear-gradient(transparent 62%,rgba(210,35,42,.4) 62%)}
+.sticker p{font-size:15.5px;line-height:1.5;margin-top:8px}
+.sticker .en{direction:ltr;text-align:left;font-size:11.5px;color:#6f6a60;
+  margin-top:10px;letter-spacing:.02em;line-height:1.4}
+.sticker.place-only{width:auto;min-width:230px;max-width:320px;text-align:center;
+  padding:24px 34px}
+.sticker.place-only h2{font-family:'Anton';font-size:clamp(34px,10vw,54px);
+  font-weight:400;letter-spacing:.08em;line-height:1;direction:ltr}
+.sticker .go{
+  display:inline-block;margin-top:14px;background:var(--red);color:#fff;
+  font-family:'Rubik';font-weight:700;font-size:16px;text-decoration:none;
+  padding:10px 18px;border:2px solid var(--ink);
+  box-shadow:4px 4px 0 rgba(20,20,20,.85);transition:transform .12s,box-shadow .12s}
+.sticker .go:hover,.sticker .go:focus-visible{transform:translate(-2px,-2px);
+  box-shadow:6px 6px 0 rgba(20,20,20,.85)}
+.sticker .go:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.sticker .go:active{transform:translate(2px,2px);box-shadow:1px 1px 0 rgba(20,20,20,.85)}
+.strip{display:flex;gap:6px;margin-top:12px}
+.strip img{width:0;flex:1;aspect-ratio:3/4;object-fit:cover;border:2px solid var(--ink)}
+.strip img.wide{aspect-ratio:4/3}
+.artifact-carousel{display:flex;gap:7px;margin-top:12px;padding:0 0 6px;
+  direction:ltr;overflow-x:auto;overscroll-behavior-inline:contain;
+  scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:var(--red) transparent}
+.artifact-carousel img{flex:0 0 42%;width:42%;aspect-ratio:3/4;object-fit:cover;
+  border:2px solid var(--ink);scroll-snap-align:start;background:var(--paper)}
+.artifact-carousel img.pamphlet{object-fit:contain;background:#fff}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.sticker .go.secondary{background:var(--sticker);color:var(--ink)}
+.sticker .go.secondary:hover,.sticker .go.secondary:focus-visible{
+  background:var(--red);color:#fff}
+.video-strip{display:flex;gap:6px;margin-top:14px;direction:ltr}
+.video-strip video{width:0;flex:1;aspect-ratio:3/4;object-fit:cover;
+  border:2px solid var(--ink);background:var(--ink)}
+.site-start h2{font-family:'Anton';font-size:clamp(34px,10vw,54px);font-weight:400;
+  letter-spacing:.08em;line-height:1;direction:ltr;text-align:center}
+/* ---------- bilingual story trailer ---------- */
+.story-sticker{max-width:330px;padding:12px}
+.story-player{background:var(--ink);border:2px solid var(--ink)}
+.story-player video{display:block;width:100%;max-height:54svh;aspect-ratio:9/16;
+  object-fit:contain;background:var(--ink)}
+.language-toggle{display:flex;direction:ltr;margin-top:10px;gap:8px;justify-content:center}
+.language-toggle button{font-family:'Rubik';font-weight:700;font-size:14px;
+  min-width:62px;padding:8px 14px;color:var(--ink);background:var(--sticker);
+  border:2px solid var(--ink);box-shadow:3px 3px 0 rgba(20,20,20,.85);
+  cursor:pointer}
+.language-toggle button[aria-pressed="true"]{color:#fff;background:var(--red)}
+.language-toggle button:hover,.language-toggle button:focus-visible{
+  transform:translate(-1px,-1px);box-shadow:4px 4px 0 rgba(20,20,20,.85)}
+.language-toggle button:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.language-toggle button:active{transform:translate(1px,1px);box-shadow:1px 1px 0 rgba(20,20,20,.85)}
+/* ---------- title sticker ---------- */
+#s-title .sticker{max-width:340px;text-align:center;padding:26px 24px 24px;
+  transform:rotate(-1.8deg)}
+#s-title.on .sticker{transform:rotate(-1.8deg)}
+#s-title h1{font-family:'Secular One';font-weight:400;font-size:clamp(52px,15vw,72px);
+  line-height:1.02;white-space:nowrap}
+#s-title .latin{font-family:'Anton';font-size:clamp(20px,5.5vw,26px);letter-spacing:.34em;
+  margin-top:4px;text-indent:.34em;color:var(--red)}
+#s-title .sub{font-size:14.5px;margin-top:12px;line-height:1.5}
+#s-title .en{text-align:center;margin-top:8px}
+.cue{position:absolute;bottom:calc(34px + env(safe-area-inset-bottom));left:0;right:0;
+  text-align:center;font-family:'Rubik';font-weight:700;font-size:14px;color:var(--ink);
+  pointer-events:none}
+.cue .arr{display:block;font-size:20px;color:var(--red);
+  animation:bob 1.6s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+@media (prefers-reduced-motion:reduce){.cue .arr{animation:none}}
+/* ---------- finale ---------- */
+#s-end .sticker{max-width:440px}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.links a{font-family:'Rubik';font-weight:700;font-size:14px;color:var(--ink);
+  text-decoration:none;border:2px solid var(--ink);background:var(--sticker);
+  padding:8px 12px;box-shadow:3px 3px 0 rgba(20,20,20,.85)}
+.links a:hover,.links a:focus-visible{background:var(--red);color:#fff}
+.links a:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.handle{margin-top:14px;font-size:14px}
+.handle b{font-family:'Rubik';font-weight:700}
+.handle a{color:var(--red);font-weight:700;text-decoration:none}
+.handle a:hover,.handle a:focus-visible{text-decoration:underline}
+.handle a:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.foot{margin-top:14px;padding-top:10px;border-top:1.5px solid #d8d3c8;
+  font-size:11px;color:#6f6a60}
+/* ---------- wordmark chip ---------- */
+#chip{position:fixed;top:calc(10px + env(safe-area-inset-top));inset-inline-start:12px;
+  z-index:3;font-family:'Secular One';font-size:17px;background:var(--sticker);
+  border:2px solid var(--ink);padding:3px 10px 4px;transform:rotate(-2deg);
+  box-shadow:3px 3px 0 rgba(20,20,20,.85);opacity:0;transition:opacity .4s;
+  pointer-events:none}
+body.past-title #chip{opacity:1}
+@media (min-width:760px){
+  section{justify-content:flex-start;padding-inline-start:6vw}
+  #s-title{justify-content:center}
+  .sticker{max-width:400px}
+  #s-title .sticker{max-width:420px;padding-inline:34px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .sticker{transition:none}
+}
+</style>
+</head>
+<body>
+
+<div id="stage" aria-hidden="true">
+  <div id="world">
+    <img class="map" src="assets/map_clean.jpg" alt="">
+    <video id="mapvid" src="assets/map_alive.mp4" muted loop playsinline autoplay
+           poster="assets/map_clean.jpg"></video>
+    <svg id="anno" viewBox="0 0 1220 818">
+      <!-- stop 1: PLATFORM / PUBLIC MEMESCAPE -->
+      <g id="a1">
+        <path stroke-width="7" d="M575,180 C455,168 380,205 385,255 C390,308 505,330 610,318 C712,306 745,262 718,222 C690,184 560,164 500,182"/>
+        <path class="p2" stroke-width="6" d="M655,120 C640,140 628,152 616,166 M616,166 l20,-8 M616,166 l4,-22"/>
+      </g>
+      <!-- stop 2: CUBOID STUDIO -->
+      <g id="a2">
+        <path stroke-width="7" d="M600,335 C480,345 430,400 455,470 C482,542 620,572 725,540 C826,510 828,420 770,375 C716,333 610,325 570,340"/>
+      </g>
+      <!-- stop 3: THE SEVENTY -->
+      <g id="a3">
+        <path stroke-width="6.5" d="M965,420 C880,418 830,445 838,485 C846,528 940,545 1000,528 C1058,512 1062,462 1020,438 C985,418 930,415 905,424"/>
+        <path class="p2" stroke-width="5.5" d="M790,560 C815,548 838,535 858,522 M858,522 l-24,2 M858,522 l-8,22"/>
+      </g>
+      <!-- stop 3: GEOMETRY -->
+      <g id="a6">
+        <path stroke-width="6.5" d="M1015,245 C930,224 850,245 830,294 C807,351 892,389 1000,382 C1106,375 1160,329 1139,285 C1121,246 1045,232 982,242"/>
+      </g>
+      <!-- stop 4: THEORY -->
+      <g id="a4">
+        <path stroke-width="7" d="M560,610 C445,622 400,660 425,692 C452,726 640,732 760,712 C868,694 890,652 845,628 C800,605 640,600 590,612"/>
+      </g>
+      <!-- stop 5: SITE / return -->
+      <g id="a5">
+        <path stroke-width="7" d="M290,330 C195,336 148,380 165,440 C183,502 300,528 380,505 C458,483 462,405 415,368 C372,335 300,326 270,338"/>
+        <path class="p2" stroke-width="5.5" d="M410,560 C380,548 352,538 322,528 M322,528 l24,-4 M322,528 l12,20"/>
+      </g>
+      <!-- stop 2: story trailer / journey from SITE to PLATFORM -->
+      <g id="a7">
+        <path stroke-width="6" d="M350,342 C385,320 420,298 458,274 M458,274 l-24,3 M458,274 l-8,22"/>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<div id="chip">פה־אתיקה</div>
+
+<main>
+  <section id="s-title" data-stop="0">
+    <div class="sticker">
+      <h1>פה־אתיקה</h1>
+      <div class="latin" lang="en">POETIKS</div>
+      <p class="sub">תזה בארכיטקטורה שלוקחת ממים ברצינות.<br>אוניברסיטת תל אביב, 2026.</p>
+      <p class="en" lang="en">a B.Arch thesis that takes memes seriously</p>
+    </div>
+    <div class="cue">גללו. זה מסביר את עצמו.<span class="arr">↓</span></div>
+  </section>
+
+  <section id="s-site-start" data-stop="1">
+    <div id="card-site-start" class="sticker site-start">
+      <h2 lang="en">SITE</h2>
+      <div class="video-strip">
+        <video src="assets/site-cats-space.mp4" muted loop playsinline autoplay preload="metadata"></video>
+        <video src="assets/site-cats-ramen.mp4" muted loop playsinline autoplay preload="metadata"></video>
+        <video src="assets/site-cats-generated.mp4" muted loop playsinline autoplay preload="metadata"></video>
+      </div>
+    </div>
+  </section>
+
+  <section id="s-story" data-stop="2">
+    <div id="card-story" class="sticker story-sticker">
+      <div class="story-player">
+        <video id="story-video" src="assets/storytrailerhe.mp4" controls playsinline preload="metadata"></video>
+      </div>
+      <div class="language-toggle" aria-label="Story trailer language">
+        <button type="button" data-language="he" aria-pressed="true">HE</button>
+        <button type="button" data-language="en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="s-platform" data-stop="3">
+    <div id="card-platform" class="sticker">
+      <h2>מסתכלים מסביב. <span class="u">אומרים משהו.</span></h2>
+      <p>„מגחכים על העיר” — פלטפורמה השתתפותית לממים על המרחב הבנוי. רואים משהו ברחוב, עושים עליו מם, והוא נכנס לשדה — יחד עם התגובות, השיתופים והרמיקסים של כולם.</p>
+      <div class="artifact-carousel" aria-label="גיחוכים ופליירים מתוך הפלטפורמה">
+        <img src="assets/ch02_meme-00.jpg" alt="מם: היציבות הנפשית שלי לאחרונה" loading="lazy">
+        <img src="assets/ch02_meme-07.jpg" alt="מם: כשנגמר הנייר טואלט" loading="lazy">
+        <img src="assets/ch02_meme-06.jpg" alt="מם פרפר: האם זה באוהאוס?" loading="lazy">
+        <img src="assets/platform-meme-butterfly-urbanism.jpg" alt="מם פרפר: האם זה אורבניזם טוב?" loading="lazy">
+        <img class="pamphlet" src="assets/platform-pamphlet-drake.jpg" alt="פלייר מגחכים על העיר עם Drake וקוד QR" loading="lazy">
+        <img class="pamphlet" src="assets/platform-pamphlet-nahalat-yitzhak.jpg" alt="פלייר נחלת יצחק עם חזית עיני חתול וקוד QR" loading="lazy">
+      </div>
+      <p class="en" lang="en">“Giggling at the City” is a participatory platform for creating and sharing memes about the built environment. Turn an observation into a meme and add your reading to the memescape.</p>
+      <div class="actions">
+        <a class="go" href="https://memes.iddonaim.com/create">צרו גיחוך ←</a>
+        <a class="go secondary" href="https://memes.iddonaim.com/gallery">לגלריה ←</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="s-geometry" data-stop="4">
+    <div id="card-geometry" class="sticker">
+      <h2>שמונה חתכים אפשריים. <span class="u">בוחרים ארבעה.</span></h2>
+      <p>כל קלף הוא צירוף אחר של ארבעה חתכים בקובייה אחת של 42 מ״מ. <bdi dir="ltr">C(8,4)=70</bdi> — שבעים זה לא בחירה, זה חשבון.</p>
+      <div class="strip">
+        <img class="wide" src="assets/cards/V-00.svg" alt="קלף וריאציה V-00" loading="lazy">
+        <img class="wide" src="assets/cards/V-35.svg" alt="קלף וריאציה V-35" loading="lazy">
+        <img class="wide" src="assets/cards/V-69.svg" alt="קלף וריאציה V-69" loading="lazy">
+      </div>
+      <p class="en" lang="en">70 variation cards · one 42mm cuboid · four boolean cuts each</p>
+      <a class="go" href="/seventy/">לכל הקלפים ←</a>
+    </div>
+  </section>
+
+  <section id="s-seventy" data-stop="5">
+    <div id="card-seventy" class="sticker">
+      <h2>שבעים פנים <span class="u">לקובייה</span></h2>
+      <p>שבעים וריאציות, לכל אחת נימוק משלה. כן, לכולן.</p>
+      <div class="strip">
+        <img src="assets/ch04_v00.jpg" alt="וריאציה 00">
+        <img src="assets/ch04_v42.jpg" alt="וריאציה 42">
+        <img src="assets/ch04_v69.jpg" alt="וריאציה 69">
+      </div>
+      <p class="en" lang="en">The Seventy: seventy argued variations on a cube.</p>
+    </div>
+  </section>
+
+  <section id="s-theory" data-stop="6">
+    <div id="card-theory" class="sticker">
+      <h2>יש גם תזה כתובה. <span class="u">ברצינות.</span></h2>
+      <p>מהפטאפיזיקה של ז׳ארי ועד הממים של שיפמן — הטקסט המלא, עם כל הציטוטים.</p>
+      <p class="en" lang="en">Yes, there's a written thesis. With citations.</p>
+      <a class="go" href="https://poetiks-agency-atlas.iddonaim.chatgpt.site">לקריאה ←</a>
+    </div>
+  </section>
+
+  <section id="s-cuboid" data-stop="7">
+    <div id="card-cuboid" class="sticker">
+      <h2>סטודיו שלוקח קובייה <span class="u">ברצינות מוגזמת</span></h2>
+      <p>CUBOID STUDIO — אפליקציה חיה שמייצרת וריאציות אדריכליות על קובייה אחת. אפשר (וכדאי) לשחק.</p>
+      <div class="strip"><img class="wide" src="assets/studio_app.jpg" alt="ממשק האפליקציה — בחירת קובייה ומם"></div>
+      <p class="en" lang="en">A live generative studio. One cube, endless takes.</p>
+      <a class="go" href="https://cuboidstudio.vercel.app">לאפליקציה ←</a>
+    </div>
+  </section>
+
+  <section id="s-site-return" data-stop="8">
+    <div id="card-site-return" class="sticker place-only">
+      <h2 lang="en">SITE</h2>
+    </div>
+  </section>
+
+  <section id="s-end" data-stop="9">
+    <div id="card-end" class="sticker">
+      <h2>זהו. עכשיו אתם <span class="u">יודעים</span>.</h2>
+      <p>כל הדרכים פנימה:</p>
+      <div class="links">
+        <a href="https://memes.iddonaim.com/gallery">הגלריה</a>
+        <a href="https://cuboidstudio.vercel.app">האפליקציה</a>
+        <a href="/seventy/">הקלפים</a>
+        <a href="https://poetiks-agency-atlas.iddonaim.chatgpt.site">התזה</a>
+      </div>
+      <p class="handle"><a href="https://www.instagram.com/iddonaim"><bdi dir="ltr"><b>@iddonaim</b></bdi></a> · <a href="mailto:studio@iddonaim.com"><bdi dir="ltr">studio@iddonaim.com</bdi></a></p>
+      <div class="foot">פה־אתיקה · POETIKS · עידו נעים · B.Arch, TAU 2026</div>
+    </div>
+  </section>
+</main>
+
+<script>
+(function(){
+  var world=document.getElementById('world');
+  var reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var W=1220,H=818;
+  // focus rects per stop: [x,y,w,h] in map coords
+  var focus=[
+    [0,0,1220,818],        // title: whole map (behind video)
+    [120,300,380,300],     // site / departure
+    [160,150,600,430],     // story trailer / site-to-platform journey
+    [360,110,420,290],     // platform / memescape
+    [790,180,390,250],     // geometry
+    [760,380,320,230],     // the seventy
+    [380,560,540,220],     // theory
+    [420,300,430,300],     // cuboid studio
+    [120,300,380,300],     // site / return
+    [0,0,1220,818]         // finale: whole map
+  ];
+  var vw,vh;
+  function apply(i){
+    var f=focus[i], pad=1.12;
+    var fw=f[2]*pad, fh=f[3]*pad;
+    var cx=f[0]+f[2]/2, cy=f[1]+f[3]/2;
+    var tx,ty,s;
+    if(i===0){
+      s=Math.max(vw/W, vh/H); // cover behind the title
+      tx=Math.min(0,Math.max(vw-W*s, vw/2-cx*s));
+      ty=Math.min(0,Math.max(vh-H*s, vh/2-cy*s));
+    } else if(i===9){
+      // finale: the WHOLE map visible, centered in the band above the sticker
+      var bandH=vh*0.55;
+      s=Math.min(vw*0.94/W, bandH/H);
+      tx=(vw-W*s)/2;
+      ty=Math.max(10, 10+(bandH-H*s)/2);
+    } else {
+      // fit the focus region into the band ABOVE the sticker (top ~55% of viewport)
+      var availH=vh*0.55, topPad=12, bandB=topPad+availH;
+      s=Math.min(vw*0.96/fw, availH/fh, 1.5);
+      s=Math.max(s, vw/W, bandB/H); // map must at least cover the band
+      tx=Math.min(0,Math.max(vw-W*s, vw/2-cx*s));
+      ty=Math.min(0,Math.max(bandB-H*s, topPad+availH/2-cy*s));
+    }
+    world.style.transform='translate('+tx+'px,'+ty+'px) scale('+s+')';
+  }
+  var cur=0;
+  function measure(){vw=window.innerWidth;vh=window.innerHeight;apply(cur);}
+  window.addEventListener('resize',measure);
+  measure();
+  var cards=document.querySelectorAll('section>.sticker');
+  var siteVids=document.querySelectorAll('.video-strip video');
+  var siteVideoIo=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      siteVids.forEach(function(v){
+        if(e.isIntersecting && !reduceMotion){v.play().catch(function(){});}else{v.pause();}
+      });
+    });
+  },{threshold:0.1});
+  siteVideoIo.observe(document.getElementById('card-site-start'));
+  var storyVideo=document.getElementById('story-video');
+  var storySources={
+    he:'assets/storytrailerhe.mp4',
+    en:'assets/storytraileren.mp4'
+  };
+  document.querySelectorAll('.language-toggle button').forEach(function(button){
+    button.addEventListener('click',function(){
+      var language=button.dataset.language;
+      if(storyVideo.getAttribute('src')===storySources[language]){return;}
+      var wasPlaying=!storyVideo.paused;
+      storyVideo.setAttribute('src',storySources[language]);
+      storyVideo.load();
+      document.querySelectorAll('.language-toggle button').forEach(function(option){
+        option.setAttribute('aria-pressed',String(option===button));
+      });
+      if(wasPlaying){storyVideo.play().catch(function(){});}
+    });
+  });
+  var storyVideoIo=new IntersectionObserver(function(es){
+    es.forEach(function(e){if(!e.isIntersecting){storyVideo.pause();}});
+  },{threshold:0.1});
+  storyVideoIo.observe(document.getElementById('card-story'));
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      var sec=e.target.closest('section');
+      var i=+sec.dataset.stop;
+      if(e.isIntersecting){
+        sec.classList.add('on');
+        cur=i;apply(i);
+        document.body.classList.toggle('past-title',i>0);
+        if(!reduceMotion){document.getElementById('mapvid').play().catch(function(){});}
+        var reveals={a5:1,a7:2,a1:3,a6:4,a3:5,a4:6,a2:7};
+        Object.keys(reveals).forEach(function(id){
+          document.getElementById(id).classList.toggle('on',i>=reveals[id] || i===9);
+        });
+      }
+    });
+  },{threshold:0.45});
+  cards.forEach(function(card){io.observe(card)});
+  if(reduceMotion){document.getElementById('mapvid').pause();}
+  // set dash lengths
+  document.querySelectorAll('#anno path').forEach(function(p){
+    var L=Math.ceil(p.getTotalLength())+2;
+    p.style.setProperty('--len',L);
+  });
+})();
+</script>
+</body>
+</html>
