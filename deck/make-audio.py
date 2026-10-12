@@ -2,7 +2,7 @@
 """Generate one narration mp3 per slide from deck/script.json with ElevenLabs.
 
 Usage (from the repo root):
-    ELEVENLABS_API_KEY=... ELEVENLABS_VOICE_ID=... python3 deck/make-audio.py [--only 3,7,12] [--model eleven_multilingual_v2]
+    ELEVENLABS_API_KEY=... ELEVENLABS_VOICE_ID=... python3 deck/make-audio.py [--only 3,7,12] [--model eleven_v4]
 
 Writes deck/audio/sNN.mp3 and sets "audio": true in deck/script.json so the player
 uses the files instead of the browser voice. Re-run with --only after editing a line.
@@ -19,7 +19,7 @@ def tts(text, key, voice, model):
     body = json.dumps({
         'text': text,
         'model_id': model,
-        'voice_settings': {'stability': 0.5, 'similarity_boost': 0.8, 'style': 0.15, 'use_speaker_boost': True},
+        'voice_settings': {'stability': 0.5, 'similarity_boost': 0.8},
     }).encode('utf-8')
     req = urllib.request.Request(url, data=body, method='POST', headers={
         'xi-api-key': key, 'Content-Type': 'application/json', 'Accept': 'audio/mpeg'})
@@ -29,7 +29,7 @@ def tts(text, key, voice, model):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--only', help='comma-separated slide numbers to (re)generate')
-    ap.add_argument('--model', default='eleven_multilingual_v2')
+    ap.add_argument('--model', default='eleven_v4')
     args = ap.parse_args()
     key = os.environ.get('ELEVENLABS_API_KEY'); voice = os.environ.get('ELEVENLABS_VOICE_ID')
     if not key or not voice:
