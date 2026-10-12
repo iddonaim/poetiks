@@ -9,8 +9,14 @@
 <meta property="og:description" content="פרויקט גמר, עידו נעים — בית הספר לאדריכלות ע״ש עזריאלי, אוניברסיטת תל אביב">
 <meta property="og:image" content="s01.webp">
 <style>
+  @font-face { font-family:'Assistant'; src:url('webfonts/assistant-400.woff2') format('woff2'); font-weight:400; font-display:swap; }
+  @font-face { font-family:'Assistant'; src:url('webfonts/assistant-600.woff2') format('woff2'); font-weight:600; font-display:swap; }
+  @font-face { font-family:'Assistant'; src:url('webfonts/assistant-700.woff2') format('woff2'); font-weight:700; font-display:swap; }
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  html,body { height:100%; background:#0a0a0a; overflow:hidden; font-family:system-ui,-apple-system,"Segoe UI",sans-serif; }
+  html,body { height:100%; background:#0a0a0a; overflow:hidden; font-family:'Assistant',system-ui,-apple-system,"Segoe UI",sans-serif; color:#e8e8e8; }
+  button { font-family:inherit; }
+
+  /* ---------- stage (landscape / desktop) ---------- */
   #stage-wrap { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; }
   #stage { position:relative; aspect-ratio:16/9; width:100vw; max-height:100vh; max-width:calc(100vh*16/9); background:#fff;
            box-shadow:0 0 60px rgba(0,0,0,.8); user-select:none; }
@@ -19,6 +25,8 @@
   .slide img.bg { position:absolute; inset:0; width:100%; height:100%; }
   .slide video { position:absolute; object-fit:cover; }
   .slide video.unstarted { display:none; }
+
+  /* ---------- HUD ---------- */
   .hud { position:fixed; z-index:30; transition:opacity .4s; }
   .hud.hidden { opacity:0; pointer-events:none; }
   #counter { left:50%; transform:translateX(-50%); bottom:14px; color:#bbb; font-size:13px; letter-spacing:.12em;
@@ -28,8 +36,6 @@
             display:flex; align-items:center; justify-content:center; backdrop-filter:blur(4px); }
   .navbtn:hover { background:rgba(10,10,10,.65); }
   #nextBtn { right:10px; } #prevBtn { left:10px; }
-  #fsBtn { top:14px; right:14px; width:40px; height:40px; border:none; border-radius:9px; cursor:pointer;
-           background:rgba(10,10,10,.45); color:#ddd; font-size:17px; backdrop-filter:blur(4px); }
   #title-tag { top:20px; left:20px; color:#888; font-size:12px; letter-spacing:.22em; direction:ltr; }
   #hint { bottom:52px; left:50%; transform:translateX(-50%); color:#777; font-size:12px; direction:rtl;
           background:rgba(10,10,10,.5); padding:5px 12px; border-radius:14px; }
@@ -39,17 +45,71 @@
              transition:transform .15s, background .15s; }
   .playbtn:hover { transform:translate(-50%,-50%) scale(1.07); background:rgba(10,10,10,.9); }
   .playbtn svg { margin-left:6px; }
+
+  /* top-right tool cluster: fullscreen · captions · narration */
+  #tools { top:14px; right:14px; display:flex; gap:8px; direction:ltr; }
+  #tools button { height:40px; min-width:40px; padding:0 12px; border:none; border-radius:9px; cursor:pointer;
+                  background:rgba(10,10,10,.45); color:#ddd; font-size:15px; font-weight:600; backdrop-filter:blur(4px);
+                  display:flex; align-items:center; gap:6px; }
+  #tools button.on { background:#a4322a; color:#fff; }
+  #tools button:hover { background:rgba(10,10,10,.75); } #tools button.on:hover { background:#8a2a23; }
+
+  /* captions overlay (landscape) */
+  #cc { position:fixed; z-index:25; left:50%; transform:translateX(-50%); bottom:56px; width:min(78vw,60rem);
+        background:rgba(10,10,10,.78); color:#f2f2f2; padding:14px 22px; border-radius:12px; font-size:clamp(15px,1.5vw,21px);
+        line-height:1.55; text-align:right; direction:rtl; display:none; backdrop-filter:blur(6px); }
+  body.cc #cc { display:block; }
+  body.cc #hint { display:none; }
+
+  /* ---------- reader mode (portrait phones / narrow) ---------- */
+  body.reader { overflow:auto; display:flex; flex-direction:column; min-height:100%; height:auto; }
+  body.reader #stage-wrap { position:sticky; top:0; z-index:20; height:auto; display:block; background:#0a0a0a; }
+  body.reader #stage { width:100vw; max-width:none; max-height:none; box-shadow:0 6px 30px rgba(0,0,0,.6); }
+  body.reader #cap { display:block; }
+  #cap { display:none; padding:22px 20px 110px; font-size:17.5px; line-height:1.7; color:#ececec; text-align:right; direction:rtl;
+         max-width:44rem; margin:0 auto; width:100%; }
+  #cap .n { color:#888; font-size:12px; letter-spacing:.14em; direction:ltr; text-align:right; margin-bottom:10px; }
+  #cap .t { white-space:pre-line; }
+  #cap .note { color:#777; font-size:13px; margin-top:18px; }
+  body.reader .navbtn, body.reader #counter, body.reader #hint, body.reader #title-tag, body.reader #cc { display:none !important; }
+  body.reader #tools { top:auto; bottom:14px; right:14px; }
+  #bar { display:none; position:fixed; z-index:30; left:0; right:0; bottom:0; padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+         background:linear-gradient(to top, rgba(10,10,10,.96), rgba(10,10,10,.75) 70%, rgba(10,10,10,0)); direction:ltr;
+         display:none; align-items:center; gap:10px; }
+  body.reader #bar { display:flex; }
+  #bar button { height:44px; border:none; border-radius:10px; cursor:pointer; background:rgba(255,255,255,.1); color:#eee;
+                font-size:15px; font-weight:600; padding:0 14px; display:flex; align-items:center; gap:6px; }
+  #bar button.on { background:#a4322a; color:#fff; }
+  #bar .nav { width:52px; padding:0; font-size:22px; }
+  #bar #bcount { flex:1; text-align:center; color:#aaa; font-size:13px; letter-spacing:.12em; }
+  body.reader #tools { display:none; }
+
   @media (max-width:700px){ .navbtn{ width:34px; height:60px; font-size:20px; } #hint{ display:none; } }
 </style>
 </head>
 <body>
 <div id="stage-wrap"><div id="stage"></div></div>
+<div id="cap"><div class="n">1 / 40</div><div class="t"></div><div class="note"></div></div>
+
 <div class="hud" id="title-tag">POETIKS</div>
 <button class="hud navbtn" id="prevBtn" aria-label="הקודם"><svg width="22" height="34" viewBox="0 0 24 40" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"><path d="M18 4 L6 20 L18 36"/></svg></button>
 <button class="hud navbtn" id="nextBtn" aria-label="הבא"><svg width="22" height="34" viewBox="0 0 24 40" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"><path d="M6 4 L18 20 L6 36"/></svg></button>
-<button class="hud" id="fsBtn" aria-label="מסך מלא">⛶</button>
-<div class="hud" id="counter">1 / 37</div>
-<div class="hud" id="hint">‏חצים / רווח למעבר בין שקפים</div>
+<div class="hud" id="tools">
+  <button id="voiceBtn" aria-label="קריינות" title="קריינות — הפעל ועבור שקף־שקף">▶ קריינות</button>
+  <button id="ccBtn" aria-label="כתוביות" title="הטקסט המדובר">CC</button>
+  <button id="fsBtn" aria-label="מסך מלא" title="מסך מלא">⛶</button>
+</div>
+<div id="cc"></div>
+<div class="hud" id="counter">1 / 40</div>
+<div class="hud" id="hint">‏חצים / רווח למעבר בין שקפים · CC לטקסט · ▶ לקריינות</div>
+
+<div id="bar">
+  <button class="nav" id="bPrev" aria-label="הקודם">‹</button>
+  <button id="bVoice" aria-label="קריינות">▶ קריינות</button>
+  <div id="bcount">1 / 40</div>
+  <button class="nav" id="bNext" aria-label="הבא">›</button>
+</div>
+
 <script src="hls.min.js"></script>
 <script>
 const N = 40;
@@ -86,7 +146,7 @@ for (let i=1;i<=N;i++){
       vid.controls=true; vid.classList.add('unstarted');
       const pb=document.createElement('button'); pb.className='playbtn'; pb.setAttribute('aria-label','נגן');
       pb.innerHTML='<svg width="34" height="34" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>';
-      pb.addEventListener('click',e=>{ e.stopPropagation(); pb.style.display='none'; vid.classList.remove('unstarted'); vid.play(); });
+      pb.addEventListener('click',e=>{ e.stopPropagation(); stopNarration(); pb.style.display='none'; vid.classList.remove('unstarted'); vid.play(); });
       vid.addEventListener('ended',()=>{ pb.style.display='flex'; });
       d.appendChild(vid); d.appendChild(pb);
       d._playBtn = pb;
@@ -96,6 +156,69 @@ for (let i=1;i<=N;i++){
   }
   stage.appendChild(d); slides.push(d);
 }
+
+/* ---------- script (captions + narration) ---------- */
+let SCRIPT = null;            // {lang, audio, slides:[{n,t}]}
+const capT = document.querySelector('#cap .t'), capN = document.querySelector('#cap .n'), capNote = document.querySelector('#cap .note');
+const cc = document.getElementById('cc');
+fetch('deck/script.json').then(r=>r.json()).then(j=>{ SCRIPT=j; renderText(); }).catch(()=>{ capNote.textContent='הטקסט המדובר לא נטען.'; });
+function lineFor(k){ if(!SCRIPT) return ''; const s=SCRIPT.slides.find(x=>x.n===k+1); return s?s.t:''; }
+function renderText(){
+  const t = lineFor(cur);
+  capT.textContent = t; cc.textContent = t;
+  capN.textContent = `${cur+1} / ${N}`;
+  document.getElementById('cap').scrollTop = 0;
+}
+
+/* narration: mp3 per slide if the script declares audio, otherwise the browser's Hebrew voice */
+let voiceOn = false, speaking = false;
+const player = new Audio(); player.preload='auto';
+let utter = null;
+function hebrewVoice(){
+  const vs = speechSynthesis.getVoices();
+  return vs.find(v=>/^he/i.test(v.lang)) || vs.find(v=>/hebrew|עברית|carmit/i.test(v.name)) || null;
+}
+function stopNarration(){
+  speaking=false;
+  try{ player.pause(); player.onended=null; }catch(e){}
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+}
+function narrate(){
+  stopNarration();
+  if (!voiceOn || !SCRIPT) return;
+  const text = lineFor(cur); if (!text) return;
+  const done = ()=>{ speaking=false; if (!voiceOn) return;
+    // play-through: advance unless this slide holds a click-to-play video
+    const v = VIDEOS[cur+1]; if (v && v.mode==='click') return;
+    if (cur < N-1) setTimeout(()=>{ if(voiceOn) next(); }, 700);
+  };
+  const file = SCRIPT.audio ? `deck/audio/s${String(cur+1).padStart(2,'0')}.mp3` : null;
+  if (file){
+    player.src = file; player.onended = done;
+    player.onerror = ()=>{ speakTTS(text, done); };
+    speaking=true; player.play().catch(()=>speakTTS(text, done));
+  } else speakTTS(text, done);
+}
+function speakTTS(text, done){
+  if (!('speechSynthesis' in window)){ capNote.textContent='אין קול עברי בדפדפן הזה — הטקסט מוצג בלבד.'; return; }
+  utter = new SpeechSynthesisUtterance(text);
+  const v = hebrewVoice(); if (v) utter.voice = v; utter.lang = (SCRIPT && SCRIPT.lang) || 'he-IL'; utter.rate = 0.95;
+  utter.onend = done; utter.onerror = ()=>{ speaking=false; };
+  speaking=true; speechSynthesis.speak(utter);
+  if (!v) capNote.textContent='הדפדפן הזה בלי קול עברי מובנה; הקריינות עלולה להישמע לא עברית.';
+}
+if ('speechSynthesis' in window) speechSynthesis.onvoiceschanged = ()=>{};
+function setVoice(on){
+  voiceOn = on;
+  ['voiceBtn','bVoice'].forEach(id=>{ const b=document.getElementById(id); b.classList.toggle('on',on); b.textContent = on ? '❚❚ קריינות' : '▶ קריינות'; });
+  if (on){ if (!document.body.classList.contains('reader')) setCC(true); narrate(); } else stopNarration();
+}
+function setCC(on){ document.body.classList.toggle('cc',on); document.getElementById('ccBtn').classList.toggle('on',on); }
+document.getElementById('voiceBtn').addEventListener('click',()=>setVoice(!voiceOn));
+document.getElementById('bVoice').addEventListener('click',()=>setVoice(!voiceOn));
+document.getElementById('ccBtn').addEventListener('click',()=>setCC(!document.body.classList.contains('cc')));
+
+/* ---------- navigation ---------- */
 let cur = 0;
 function show(n, dirFwd=true){
   n = Math.max(0, Math.min(N-1, n));
@@ -110,18 +233,24 @@ function show(n, dirFwd=true){
     if (VIDEOS[cur+1].mode==='loop'){ s._video.currentTime=0; s._video.play().catch(()=>{}); }
   }
   document.getElementById('counter').textContent = `${cur+1} / ${N}`;
+  document.getElementById('bcount').textContent = `${cur+1} / ${N}`;
   // preload neighbors
   [cur+1,cur+2,cur-1].forEach(k=>{ if(k>=0&&k<N){ const im=slides[k].querySelector('img'); im.loading='eager'; }});
   if (history.replaceState) history.replaceState(null,'','#'+(cur+1));
+  renderText(); narrate();
 }
 function next(){ show(cur+1); } function prevS(){ show(cur-1,false); }
 document.getElementById('nextBtn').addEventListener('click',next);
 document.getElementById('prevBtn').addEventListener('click',prevS);
+document.getElementById('bNext').addEventListener('click',next);
+document.getElementById('bPrev').addEventListener('click',prevS);
 document.addEventListener('keydown',e=>{
   if (['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){ e.preventDefault(); next(); }
   else if (['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){ e.preventDefault(); prevS(); }
   else if (e.key==='Home') show(0); else if (e.key==='End') show(N-1);
   else if (e.key==='f'||e.key==='F') toggleFS();
+  else if (e.key==='c'||e.key==='C') setCC(!document.body.classList.contains('cc'));
+  else if (e.key==='v'||e.key==='V') setVoice(!voiceOn);
 });
 // click on stage advances (unless interacting with a video/controls)
 stage.addEventListener('click',e=>{
@@ -132,24 +261,32 @@ window.addEventListener('hashchange',()=>{
   const k = parseInt(location.hash.slice(1));
   if (!isNaN(k)) show(k-1);
 });
-// touch swipe
-let tx=null;
-document.addEventListener('touchstart',e=>{ tx=e.touches[0].clientX; },{passive:true});
+// touch swipe (horizontal only, so the caption panel can scroll)
+let tx=null, ty=null;
+document.addEventListener('touchstart',e=>{ tx=e.touches[0].clientX; ty=e.touches[0].clientY; },{passive:true});
 document.addEventListener('touchend',e=>{
-  if(tx===null) return; const dx=e.changedTouches[0].clientX-tx; tx=null;
-  if (Math.abs(dx)>45) (dx<0)?next():prevS();
+  if(tx===null) return; const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty; tx=ty=null;
+  if (Math.abs(dx)>45 && Math.abs(dx)>Math.abs(dy)*1.5) (dx<0)?next():prevS();
 },{passive:true});
 function toggleFS(){
   if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>{});
   else document.exitFullscreen();
 }
 document.getElementById('fsBtn').addEventListener('click',toggleFS);
-// auto-hide HUD
+
+/* ---------- reader mode: portrait phones and narrow windows ---------- */
+const mq = window.matchMedia('(orientation: portrait), (max-width: 700px)');
+function applyMode(){ document.body.classList.toggle('reader', mq.matches); if (mq.matches) setCC(false); }
+mq.addEventListener ? mq.addEventListener('change',applyMode) : mq.addListener(applyMode);
+applyMode();
+
+// auto-hide HUD (landscape only)
 let hudT;
 function wake(){
   document.querySelectorAll('.hud').forEach(h=>h.classList.remove('hidden'));
   clearTimeout(hudT);
-  hudT=setTimeout(()=>document.querySelectorAll('.hud').forEach(h=>{ if(h.id!=='counter') h.classList.add('hidden'); }),2600);
+  hudT=setTimeout(()=>{ if (document.body.classList.contains('reader')) return;
+    document.querySelectorAll('.hud').forEach(h=>{ if(h.id!=='counter' && h.id!=='tools') h.classList.add('hidden'); }); },2600);
 }
 ['mousemove','touchstart','keydown'].forEach(ev=>document.addEventListener(ev,wake,{passive:true}));
 wake();

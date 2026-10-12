@@ -85,6 +85,31 @@
   .demo-wrap .playbtn:hover { background:var(--red); }
   .demo-wrap video.hidden { display:none; }
 
+  /* ---------- ch4: outputs ---------- */
+  .site-tag { font-size:.95rem; color:var(--grey); font-weight:600; text-align:center; margin-top:-2vh; }
+  .ltr { direction:ltr; unicode-bidi:isolate; }
+
+  /* ---------- ch5: thinkers / quotes ---------- */
+  .thinkers { max-width:52rem; margin:4vh auto; }
+  .thinker { display:grid; grid-template-columns:11rem 1fr; gap:1.6rem; padding:2rem 0; border-top:1px solid var(--line); }
+  @media (max-width:700px){ .thinker { grid-template-columns:1fr; gap:.4rem; } }
+  .thinker:last-child { border-bottom:1px solid var(--line); }
+  .thinker .who { font-weight:800; font-size:1.05rem; }
+  .thinker .who small { display:block; color:var(--grey); font-weight:600; font-size:.82rem; margin-top:.2rem; direction:ltr; text-align:right; }
+  .thinker p { font-size:.98em; max-width:34rem; }
+  .thinker .op { color:var(--red); font-weight:700; }
+  .quotes { max-width:var(--measure); margin:4vh auto 0; direction:ltr; text-align:left; }
+  .quotes blockquote { border-left:3px solid var(--red); padding:.2rem 0 .2rem 1.1rem; margin:0 0 1.6rem; font-size:.95em; line-height:1.6; }
+  .quotes cite { display:block; font-style:normal; color:var(--grey); font-size:.85em; margin-top:.4rem; }
+
+  /* ---------- ch6: three changes ---------- */
+  .three { max-width:52rem; margin:3vh auto; counter-reset:n; }
+  .three > div { display:grid; grid-template-columns:3.2rem 1fr; gap:1.2rem; padding:1.8rem 0; border-top:1px solid var(--line); }
+  .three > div::before { counter-increment:n; content:counter(n); color:var(--red); font-weight:800; font-size:2rem; line-height:1; }
+  .three > div:last-child { border-bottom:1px solid var(--line); }
+  .three h3 { font-size:1.15rem; font-weight:800; margin-bottom:.4rem; }
+  .three p { font-size:.98em; max-width:36rem; }
+
   /* ---------- footer ---------- */
   footer { border-top:1px solid var(--line); padding:10vh 6vw 12vh; text-align:center; }
   footer .next { color:var(--grey); max-width:34rem; margin:0 auto 4vh; }
@@ -134,14 +159,12 @@
     <div class="question-block reveal">כיצד ניתן לכונן מסגרת ממטית־אדפטיבית, המאפשרת קריאה מחדש של מרחבים קיימים, באמצעות הומור ודרך עקרונות של שיתופיות והפצה — תוך שהיא מותירה מרחב פעולה מספק ליצירת אדריכלות רב־ממדית, משתנה ורלוונטית לאורך זמן?</div>
     <p class="reveal">כדי לבחון את השאלה נבנו שני תוצרים, ושניהם חיים אונליין:</p>
     <div class="products reveal">
-      <!-- TODO: href לפלטפורמה החיה -->
-      <a class="card" href="#" data-live="platform">
+      <a class="card" href="https://memes.iddonaim.com/gallery" target="_blank" rel="noopener" data-live="platform">
         <h3>לגחך על העיר</h3>
         <p>פלטפורמה ליצירה ולשיתוף של ממים על המרחב הבנוי — איסוף הרגעים שבהם אנשים מזהים משהו במרחב ומגיבים אליו.</p>
         <span class="go">אל הפלטפורמה ←</span>
       </a>
-      <!-- TODO: href למערכת התרגום החיה -->
-      <a class="card" href="#" data-live="system">
+      <a class="card" href="https://cuboidstudio.vercel.app" target="_blank" rel="noopener" data-live="system">
         <h3>מערכת התרגום</h3>
         <p>מערכת המשתמשת בקריאות הללו — בממים מן הפלטפורמה — כדי לגלות צורות הסתכלות חדשות על המרחב, וליצור מעבר אל פעולה אדריכלית.</p>
         <span class="go">אל המערכת ←</span>
@@ -254,10 +277,119 @@
   </div>
 </section>
 
-<!-- ═══════════ סיום שלב 1 ═══════════ -->
+<!-- ═══════════ פרק 4 — תוצרים ═══════════ -->
+<section class="chapter" id="ch4">
+  <div class="ch-head reveal">
+    <div class="ch-num">4/6 · תוצרים / תוצאות</div>
+    <h2 class="ch-title">ממ־חב, נחלת יצחק וחתך המערכת</h2>
+  </div>
+  <div class="flow">
+    <p class="reveal">נתחיל מהפלטפורמה. מם בודד הוא מופע אחד; האוסף כבר מתחיל לייצר משהו אחר — מרחב של גרסאות, תגובות, רמיקסים, זיכרונות והקשרים. למרחב הזה אני קורא <em class="k">ממ־חב</em> — memescape: שדה של קריאות שאינו חייב להגיע להסכמה כדי להיות בעל משמעות. בתוך השדה כל מופע נקרא גם ביחס לאחרים, ולכן הוא יכול לשאת ריבוי של משמעויות. הריבוי הוא חלק מן המידע.</p>
+    <figure class="reveal wide">
+      <img src="s09.webp" alt="סטוריז מתוך הממ־חב — המסמך, המסמך שלי, יצירת מופת" loading="lazy">
+      <figcaption>מתוך הממ־חב — אותה פעולה, שלוש פעמים: תבנית מוכרת, הקשר חדש, דימוי משתנה</figcaption>
+    </figure>
+    <p class="reveal">הפלטפורמה לא מבקשת מהמשתתף לדבר בשפה של אדריכלים או להסביר את המרחב; היא מאפשרת לו לפעול על הייצוג שלו. הבחירה בצילום, החיתוך והטקסט שמונח עליו משנים את אופן הקריאה. לא בהכרח למדנו מה אותו אדם רוצה שנתכנן — אבל קיבלנו קריאה שלא היתה מופיעה בשום מפת שימושים, חתך רחוב או טבלת שטחים: <em class="k">רגע שבו מישהו ראה במרחב דבר נוסף</em>. וההומור כבר קיים שם, בין המשתתפים ובתוך הממים; המערכת מקבלת קריאות שכבר נוצרו ומאפשרת להן לפעול גם בתוך ייצוג אדריכלי.</p>
+
+    <figure class="reveal wide bare">
+      <img src="s34.webp" alt="נחלת יצחק — שלושה צילומי רחוב ומם" loading="lazy">
+    </figure>
+    <p class="reveal">נחלת יצחק היא המקום שבו המהלך נבחן כהמשך של תכנון. הנקודה שבה שוק הבורסה פוגש את הרחובות הישנים: מגדלים שעולים מעל רחוב של מוסכים וחנויות, פינה שכולם עוברים בה ומעטים עוצרים בה. מתחילים מקריאות קיימות של המקום ומן האופן שבו הן מופיעות אצל מי שחווה אותו — הצילום, האתר, והממים שנתלו עליו. הקריאות נכנסות למערכת, מקבלות תגובה, ומתגבשות לגיליון שמראה מה נקרא, מה תורגם, אילו שינויים התקבלו ומדוע.</p>
+    <figure class="reveal wide">
+      <img src="s35.webp" alt="גיליון הפרויקט — נחלת יצחק 16" loading="lazy">
+      <figcaption>גיליון ההחלטה — נחלת יצחק 16: תמונות מהאתר · ממים שהתערבו · קריאה מרחבית · ההרכבה · 19 קוביות, 3 ממים, דור 2</figcaption>
+    </figure>
+    <figure class="reveal wide demo-wrap">
+      <img src="s29.webp" alt="Cuboid Studio — Decode" id="decodePoster">
+      <video id="decodeVideo" class="hidden" controls playsinline preload="none"></video>
+      <button class="playbtn" id="decodePlay" aria-label="נגן Decode">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+      <figcaption>Decode — ההרכבה חוזרת כסימנים דו־ממדיים על גיליון</figcaption>
+    </figure>
+    <p class="reveal">ב־<span dir="ltr">Decode</span> כל יחידה בהרכבה — יחד עם השינויים שנבחרו ב־<span dir="ltr">Evolution</span> — מקבלת גליף דו־ממדי מתוך אותה שפה גיאומטרית. הנוטציה היא הקריאה הדו־ממדית של ההרכבה הפעילה, ואפשר להציב אותה ביחס לתכנית, לצילום או לכל ייצוג אחר של האתר: לערוך את הסימנים, את היחסים ואת הקומפוזיציה. התוצאה היא <em class="k">גיליון שאפשר לקרוא, לבקר ולהמשיך ממנו</em>.</p>
+    <div class="duo wide reveal">
+      <figure class="bare"><img src="s30.webp" alt="הנוטציה על תכנית — נחלת יצחק" loading="lazy"><figcaption>הנוטציה על התכנית</figcaption></figure>
+      <figure class="bare"><img src="s31.webp" alt="הנוטציה על תצלום אוויר — נחלת יצחק" loading="lazy"><figcaption>הנוטציה על תצלום האוויר</figcaption></figure>
+    </div>
+    <figure class="reveal wide">
+      <img src="s32.webp" alt="הנוטציה על תכנית הקומה — הצעה" loading="lazy">
+      <figcaption>אותה הרכבה, על תכנית הקומה — נקודת התחלה להמשך תכנוני, לא פתרון סופי</figcaption>
+    </figure>
+
+    <p class="lead reveal">חתך המערכת — מי עושה מה</p>
+    <p class="reveal">את מה שראינו אפשר לקרוא גם כ<em class="k">חתך מערכת</em>. כשם שחתך אדריכלי חושף יחסים שאינם נראים בחזית, חתך המערכת חושף מי מכניס חומר, מי קורא, מי מציע, מי מבצע ומי מחליט. האתר, נתוני ה־GIS והמשתתפים מספקים מקורות מסוגים שונים. מודל השפה מציע קריאה סמנטית ותרגום בתוך הלקסיקון והדקדוק. הקוד מבצע את הפעולות הגיאומטריות ושומר את מצב ההרכבה. האדריכל מגדיר את שפת הפעולה, עורך את ההצעות ומכריע אילו מהן נכנסות למצב הפעיל — פעולת ה־<span dir="ltr">Apply</span> האנושית היא נקודת ההתחייבות של המערכת.</p>
+    <figure class="reveal wide">
+      <img src="s36.webp" alt="System Section — מקור · תרגום · תוצר" loading="lazy">
+      <figcaption><span class="ltr">SYSTEM SECTION</span> — מקורות · תרגום · תוצרים: כל קו הוא מעבר שאפשר לעקוב אחריו</figcaption>
+    </figure>
+    <p class="reveal">לאורך הרצף נשמרת גם <em class="k">עקבה</em>: מאיזה מקור הגיעה הקריאה, איזו הצעה נוצרה, מה השתנה, מה נבחר ומה נעשה חלק מן ההרכבה. החתך מציג את חלוקת הסמכות הזאת — ואת האפשרות לבקר את התרגום אחרי שהתרחש.</p>
+  </div>
+</section>
+
+<!-- ═══════════ פרק 5 — יסודות תיאורטיים ═══════════ -->
+<section class="chapter" id="ch5">
+  <div class="ch-head reveal">
+    <div class="ch-num">5/6 · יסודות תיאורטיים</div>
+    <h2 class="ch-title">מי נתן למערכת את הפעולות שלה</h2>
+  </div>
+  <div class="flow">
+    <p class="reveal">כאן מופיעה בעיית ההמרה. המם פועל במרחב תרבותי של תמונות, טקסטים והקשרים; תהליך התכנון פועל במרחבי ייצוג אחרים — מפות, מודלים, דיאגרמות, תכניות והחלטות. כדי שהקריאה הממטית תשתתף בתכנון, היחסים שהיא נושאת צריכים לעבור למרחב ייצוג שאפשר להמשיך לעבוד בו. כל אחד מן המקורות הבאים הגדיר <em class="k">פעולה שהמערכת צריכה לדעת לבצע</em>.</p>
+    <div class="thinkers reveal">
+      <div class="thinker"><div class="who">אריסטו<small>Poetics · Mimesis</small></div>
+        <p><span class="op">לקרוא.</span> מימזיס היא פעולה של ייצוג, בחירה וארגון: יחסים מסוימים מקבלים צורה ומשהו נעשה קריא. המערכת בוחרת ומארגנת את היחסים שנקראו במם ונותנת להם ייצוג חדש. הקומדיה, אצל אריסטו, משתמשת במגוחך ובאי־הלימה כדי לזהות פער. ומכאן גם השם: <span dir="ltr">Poetics</span> ← פה + אתיקה.</p></div>
+      <div class="thinker"><div class="who">סיימון קריצ׳לי<small>On Humour, 2002</small></div>
+        <p><span class="op">לזהות פער.</span> ההומור יוצר מרחק שמאפשר לנו לראות את עצמנו מבחוץ ולבקר את המובן מאליו. הבדיחה קורעת חור בציפייה שלנו מן העולם — ובחור הזה נראית התבנית שהפסקנו לראות.</p></div>
+      <div class="thinker"><div class="who">ברנאר טשומי<small>Manhattan Transcripts, 1981</small></div>
+        <p><span class="op">לתרגם יחס.</span> אי־ההלימה בין חלל, אירוע ופעולה נעשית אצל טשומי חומר אדריכלי. לכן כשמם קורא כניסה כמחסום, מסדרון כמקום מפגש או חלל ריק כהזדמנות לפרוגרמה — הוא מצביע על יחס שאפשר לתרגם לפעולה מרחבית.</p></div>
+      <div class="thinker"><div class="who">ג׳רמי טיל<small>Architecture Depends, 2009</small></div>
+        <p><span class="op">להחזיק בלאגן.</span> טיל מרחיב את חומר העבודה אל הבלאגן של אנשים, זמן, פוליטיקה ושימוש. ריבוי הקריאות הוא חלק מן הקונטקסט שבתוכו התכנון פועל — לא רעש שצריך לסנן.</p></div>
+      <div class="thinker"><div class="who">ז׳יל דלז<small>Difference and Repetition, 1968</small></div>
+        <p><span class="op">להחזיק אפשרויות.</span> הווירטואלי הוא שדה ממשי של אפשרויות שטרם קיבלו אקטואליזציה מסוימת. תבנית מם מתקיימת דרך המופעים המשתנים שלה; דיאגרמה מחזיקה יחסים שיכולים להתממש בדרכים שונות. ההרכבה ב־<span dir="ltr">Cuboid Studio</span> היא שדה כזה. הכול משתנה — ודבר אינו משתנה.</p></div>
+      <div class="thinker"><div class="who">דוקינס · שיפמן<small>The Selfish Gene, 1976 · Memes in Digital Culture, 2013</small></div>
+        <p><span class="op">לייצר וריאציות.</span> המם כמשפחה שנוצרת דרך שינוי, רמיקס והשתתפות: תבנית, וריאציה, תפוצה. לא המופע הבודד הוא היחידה — אלא היחס בין המופעים.</p></div>
+      <div class="thinker"><div class="who">מריו קארפו<small>The Second Digital Turn, 2017</small></div>
+        <p><span class="op">לאפשר הכרעה.</span> בתפנית הדיגיטלית השנייה, תכנון התהליך חשוב מתכנון האובייקט. המעצב מתכנן גם מערכת: אוצר מילים, כללי הרכבה ונקודות הכרעה. במובן הזה — <em class="k">הפרומפט הוא מסמך תכנוני</em>.</p></div>
+    </div>
+    <p class="reveal">תרגום תמיד כולל בחירה: מה מקבל משקל, מה נשמר, מה משתנה ומה אובד. לכן המערכת שומרת את המקור, הקריאה, ההצעה, השינוי וההכרעה — כך אפשר לעקוב אחר המעבר בין שפה תרבותית, שפה גיאומטרית ודיאגרמה אדריכלית.</p>
+    <div class="quotes reveal">
+      <blockquote>“The Virtual is fully real in so far as it is virtual.” “The task of life is to make all these repetitions coexist in a space in which difference is disturbed.”<cite>Gilles Deleuze, Difference and Repetition, 1968</cite></blockquote>
+      <blockquote>“Architecture is not simply about space and form, but also about event, action and what happens in space.”<cite>Bernard Tschumi, Manhattan Transcripts, 1981</cite></blockquote>
+      <blockquote>“Mess is the Law.”<cite>Jeremy Till, Architecture Depends, 2009</cite></blockquote>
+      <blockquote>“Jokes tear holes in our usual predictions about the empirical world. We might say that humour is produced by a disjunction … between expectation and actuality.”<cite>Simon Critchley, On Humour, 2002</cite></blockquote>
+      <blockquote>“In the second digital turn, the design of processes matters more than the design of objects.”<cite>Mario Carpo, The Second Digital Turn, 2017</cite></blockquote>
+      <blockquote>“Instead of saying ‘I had a bad date and I feel miserable and lonely,’ one can simply paste the ‘Forever Alone’ character.”<cite>Limor Shifman, Memes in Digital Culture, 2013</cite></blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ פרק 6 — סיכום ═══════════ -->
+<section class="chapter" id="ch6">
+  <div class="ch-head reveal">
+    <div class="ch-num">6/6 · סיכום</div>
+    <h2 class="ch-title">מה משתנה לאדריכלות</h2>
+  </div>
+  <div class="flow">
+    <div class="three reveal">
+      <div><div><h3>ממים נעשים שכבת קונטקסט</h3>
+        <p>הומור, אסוציאציה, ביקורת, זיכרון תרבותי ושימוש לא צפוי מצטרפים לשמש, רוח, תנועה, תקן ושימושים קיימים. ההמרה בין מרחבי הייצוג מאפשרת לקריאות האלה לקבל מקום בתוך התהליך התכנוני.</p></div></div>
+      <div><div><h3>הביקורת מקבלת פעולה בתוך המערכת</h3>
+        <p>אפשר לשאול איזה פער המם מזהה, ואיזה יחס הוא הופך, מגביר או מסיט. הקריאה פועלת על ההרכבה ומייצרת אפשרויות שאפשר להשוות, לבחור ולפתח.</p></div></div>
+      <div><div><h3>התרגום נעשה לדבר שאפשר לעקוב אחריו</h3>
+        <p>המקור, הקריאה, הצעת מודל השפה, הפעולה החישובית וההכרעה האנושית נשמרים כרצף. כך הערכים שמניעים את התכנון מקבלים ביטוי בתוך הלקסיקון, הדקדוק, הפרומפט ונקודות ההחלטה — והמתכנן יכול לבקר גם את התוצאה וגם את הדרך שהובילה אליה.</p></div></div>
+    </div>
+    <p class="reveal">ואם לחזור אל הדרך שבה הגעתם לכאן: הפרויקט התחיל בשאלה כיצד האופן שבו אנשים רואים את העיר, מדברים עליה וצוחקים עליה יכול להיכנס לתכנון שלה. לאורך השנה הדרך עברה בין המרחבים האלה — מן החתולים והמודלים הפיזיים, דרך פלטפורמת הממים, אל מודל השפה והמערכת החישובית. בכל שלב חזרה אותה שאלה: <em class="k">כיצד קריאה תרבותית נעשית חומר שאפשר לבנות איתו</em>, בלי לאבד את האפשרות לראות מאין הגיעה וכיצד השתנתה.</p>
+    <p class="reveal">POETIKS היא הצעה לדרך עבודה אדריכלית: פלטפורמה שבה קריאות תרבותיות מופיעות, משטר תרגום שעוקב אחר מה שנבחר, השתנה ואבד, שפה גיאומטרית שמחזיקה יחסים, וכלים שמאפשרים לבחון, לפרק, להרכיב ולהמשיך. אנשים כבר משתמשים במרחב, מפרשים אותו ומספרים עליו סיפורים; ממים הם חלק מן הסיפורים האלה. אם האדריכלות נעשית חישובית, גם הקונטקסט, הביקורת והפרשנות התרבותית שלה צריכים לקבל כלים חישוביים. הכלים מרחיבים את מרחב הקריאה והפעולה; <em class="k">ההכרעה האדריכלית נשארת בידינו</em>.</p>
+    <figure class="reveal" style="max-width:30rem; margin-inline:auto;">
+      <img src="s40.webp" alt="תודה רבה — הקוביות על החלון, והחתול" loading="lazy">
+      <figcaption>תודה רבה.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ═══════════ סיום ═══════════ -->
 <footer>
-  <p class="next">כאן מסתיים החלק הראשון של האתר. בהמשך: התוצרים — ממ־חב, נחלת יצחק וחתך המערכת · היסודות התיאורטיים · סיכום.</p>
-  <a class="deck-link" href="deck/">לצפייה במצגת המלאה — 40 שקפים ←</a>
+  <a class="deck-link" href="deck/">לצפייה במצגת המלאה — 40 שקפים, עם הטקסט המדובר ←</a>
   <p class="fin">הכול משתנה — ודבר אינו משתנה.</p>
   <p class="credits2">
     POETIKS · פה־אתיקה — פרויקט גמר, תשפ״ו · עידו נעים<br>
@@ -286,6 +418,18 @@ db.addEventListener('click', () => {
     dv.dataset.wired = '1';
   }
   dp.style.display='none'; db.style.display='none'; dv.classList.remove('hidden'); dv.play();
+});
+// decode (HLS)
+const xv = document.getElementById('decodeVideo'), xb = document.getElementById('decodePlay'), xp = document.getElementById('decodePoster');
+xb.addEventListener('click', () => {
+  if (!xv.dataset.wired){
+    const src = 'media5.m3u8';
+    if (xv.canPlayType('application/vnd.apple.mpegurl')) xv.src = src;
+    else if (window.Hls && Hls.isSupported()) { const h = new Hls({maxBufferLength:20}); h.loadSource(src); h.attachMedia(xv); }
+    else xv.src = src;
+    xv.dataset.wired = '1';
+  }
+  xp.style.display='none'; xb.style.display='none'; xv.classList.remove('hidden'); xv.play();
 });
 </script>
 </body>
