@@ -8,6 +8,8 @@
 <meta property="og:title" content="POETIKS — פה־אתיקה">
 <meta property="og:description" content="כיצד ניתן להשתמש בממים ככלים תכנוניים? פרויקט גמר — עידו נעים, תשפ״ו">
 <meta property="og:image" content="s01.webp">
+<link rel="alternate" hreflang="he" href="https://iddonaim.github.io/poetiks/">
+<link rel="alternate" hreflang="en" href="https://iddonaim.github.io/poetiks/en/">
 <style>
   @font-face { font-family:'Assistant'; src:url('webfonts/assistant-400.woff2') format('woff2'); font-weight:400; font-display:swap; }
   @font-face { font-family:'Assistant'; src:url('webfonts/assistant-600.woff2') format('woff2'); font-weight:600; font-display:swap; }
@@ -122,13 +124,20 @@
   .topbar { position:fixed; top:0; right:0; left:0; z-index:50; display:flex; justify-content:space-between; align-items:center;
             padding:.7rem 1.2rem; pointer-events:none; mix-blend-mode:multiply; }
   .topbar span { font-weight:800; letter-spacing:.3em; font-size:.8rem; direction:ltr; }
+  .topbar .links { display:flex; gap:1.1rem; align-items:center; }
   .topbar a { pointer-events:auto; color:var(--ink); text-decoration:none; font-weight:600; font-size:.85rem;
               border-bottom:2px solid var(--red); }
 </style>
 </head>
 <body>
 
-<div class="topbar"><span>POETIKS</span><a href="deck/">למצגת המלאה ←</a></div>
+<div class="topbar">
+  <span>POETIKS</span>
+  <div class="links">
+    <a href="en/" lang="en" dir="ltr" title="English version">EN</a>
+    <a href="deck/">למצגת המלאה ←</a>
+  </div>
+</div>
 
 <!-- ═══════════ פתיח ═══════════ -->
 <header class="hero">

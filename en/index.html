@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POETIKS — Memes, Humor and Translation | Iddo Naim</title>
+<meta name="description" content="POETIKS: a memetic-adaptive framework for re-reading existing spaces — final project, Iddo Naim, Azrieli School of Architecture, Tel Aviv University">
+<meta property="og:title" content="POETIKS — פה־אתיקה">
+<meta property="og:description" content="Can memes become design tools? Final architecture project — Iddo Naim, 2025–26">
+<meta property="og:image" content="https://iddonaim.github.io/poetiks/s01.webp">
+<link rel="alternate" hreflang="he" href="https://iddonaim.github.io/poetiks/">
+<link rel="alternate" hreflang="en" href="https://iddonaim.github.io/poetiks/en/">
+<style>
+  @font-face { font-family:'Assistant'; src:url('../webfonts/assistant-400.woff2') format('woff2'); font-weight:400; font-display:swap; }
+  @font-face { font-family:'Assistant'; src:url('../webfonts/assistant-600.woff2') format('woff2'); font-weight:600; font-display:swap; }
+  @font-face { font-family:'Assistant'; src:url('../webfonts/assistant-700.woff2') format('woff2'); font-weight:700; font-display:swap; }
+  @font-face { font-family:'Assistant'; src:url('../webfonts/assistant-800.woff2') format('woff2'); font-weight:800; font-display:swap; }
+  :root {
+    --ink:#111114; --paper:#ffffff; --red:#a4322a; --blue:#1d6fb8; --grey:#6b6b70; --line:#e4e2de;
+    --measure:36rem;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { font-family:'Assistant',system-ui,sans-serif; background:var(--paper); color:var(--ink);
+         font-size:clamp(17px,1.35vw,20px); line-height:1.75; }
+  ::selection { background:var(--red); color:#fff; }
+
+  /* ---------- hero ---------- */
+  .hero { min-height:100svh; display:flex; flex-direction:column; justify-content:center; align-items:center;
+          text-align:center; padding:8vh 6vw 6vh; position:relative; }
+  .hero .en-title { font-weight:800; font-size:clamp(3rem,10vw,8rem); line-height:1.05; letter-spacing:.12em; }
+  .hero .he-title { font-weight:800; font-size:clamp(1.6rem,4.5vw,3.2rem); direction:rtl; margin-top:1.2rem; color:var(--ink); }
+  .hero .q { max-width:34ch; margin-top:6vh; font-size:clamp(1.1rem,2vw,1.5rem); color:var(--grey); font-weight:600; }
+  .hero .credits { position:absolute; bottom:4.5rem; font-size:.85rem; color:var(--grey); line-height:1.9; }
+  .hero .scroll-cue { position:absolute; bottom:1.4rem; color:var(--red); font-size:1.6rem; animation:bob 2.2s ease-in-out infinite; }
+  @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)} }
+
+  /* ---------- chapters ---------- */
+  .chapter { padding:14vh 6vw 10vh; border-top:1px solid var(--line); }
+  .ch-head { max-width:52rem; margin:0 auto 7vh; }
+  .ch-num { color:var(--red); font-weight:800; font-size:.95rem; letter-spacing:.35em; }
+  .ch-title { font-weight:800; font-size:clamp(2rem,5vw,3.6rem); line-height:1.1; margin-top:.6rem; }
+  .flow { max-width:52rem; margin:0 auto; display:flex; flex-direction:column; gap:4.5vh; }
+  .flow p { max-width:var(--measure); }
+  .flow p.lead { font-size:1.18em; font-weight:600; }
+  em.k { font-style:normal; color:var(--red); font-weight:700; }
+  .question-block { border-left:4px solid var(--red); padding:1.1rem 0.5rem 1.1rem 1.6rem; margin:1rem 0;
+                    font-size:clamp(1.25rem,2.6vw,1.8rem); font-weight:600; line-height:1.6; max-width:44rem; }
+  .aside { color:var(--grey); font-size:.92em; max-width:var(--measure); }
+
+  figure { margin:2vh 0; }
+  figure img, figure video { width:100%; height:auto; display:block; border:1px solid var(--line); }
+  figure.bare img, figure.bare video { border:none; }
+  figcaption { font-size:.83rem; color:var(--grey); margin-top:.6rem; line-height:1.6; }
+  .wide { max-width:min(72rem,92vw); margin-inline:auto; }
+  .duo { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; align-items:start; }
+  @media (max-width:700px){ .duo { grid-template-columns:1fr; } }
+
+  .reveal { opacity:0; transform:translateY(26px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity:1; transform:none; }
+
+  /* ---------- product cards ---------- */
+  .products { display:grid; grid-template-columns:1fr 1fr; gap:1.4rem; max-width:52rem; margin:2vh auto 0; }
+  @media (max-width:700px){ .products { grid-template-columns:1fr; } }
+  .card { border:1.5px solid var(--ink); padding:1.4rem 1.5rem; display:block; color:inherit; text-decoration:none;
+          transition:background .2s,color .2s; }
+  .card h3 { font-size:1.25rem; font-weight:800; }
+  .card p { font-size:.95rem; margin-top:.5rem; line-height:1.6; }
+  .card .go { display:inline-block; margin-top:1rem; font-weight:700; color:var(--red); font-size:.95rem; }
+  .card:hover { background:var(--ink); color:#fff; }
+  .card:hover .go { color:#ff8a7a; }
+
+  /* ---------- stages (ch3) ---------- */
+  .stages { max-width:52rem; margin:4vh auto; }
+  .stage { display:grid; grid-template-columns:11rem 1fr; gap:1.6rem; padding:2.2rem 0; border-top:1px solid var(--line); }
+  @media (max-width:700px){ .stage { grid-template-columns:1fr; gap:.4rem; } }
+  .stage:last-child { border-bottom:1px solid var(--line); }
+  .stage .tag { font-weight:800; color:var(--red); font-size:1.05rem; letter-spacing:.08em; }
+  .stage .tag small { display:block; color:var(--grey); font-weight:600; letter-spacing:0; margin-top:.2rem; }
+  .stage p { font-size:.98em; max-width:34rem; }
+  .modes-note { color:var(--grey); font-size:.92em; max-width:var(--measure); margin:1rem auto 0; }
+
+  /* ---------- video / demo ---------- */
+  .demo-wrap { position:relative; }
+  .demo-wrap .playbtn { position:absolute; inset:0; margin:auto; width:96px; height:96px; border-radius:50%;
+    border:none; cursor:pointer; background:rgba(17,17,20,.78); color:#fff; display:flex; align-items:center; justify-content:center; }
+  .demo-wrap .playbtn:hover { background:var(--red); }
+  .demo-wrap video.hidden { display:none; }
+
+  /* ---------- ch4: outputs ---------- */
+  .site-tag { font-size:.95rem; color:var(--grey); font-weight:600; text-align:center; margin-top:-2vh; }
+
+  /* ---------- ch5: thinkers / quotes ---------- */
+  .thinkers { max-width:52rem; margin:4vh auto; }
+  .thinker { display:grid; grid-template-columns:12rem 1fr; gap:1.6rem; padding:2rem 0; border-top:1px solid var(--line); }
+  @media (max-width:700px){ .thinker { grid-template-columns:1fr; gap:.4rem; } }
+  .thinker:last-child { border-bottom:1px solid var(--line); }
+  .thinker .who { font-weight:800; font-size:1.05rem; }
+  .thinker .who small { display:block; color:var(--grey); font-weight:600; font-size:.82rem; margin-top:.2rem; }
+  .thinker p { font-size:.98em; max-width:34rem; }
+  .thinker .op { color:var(--red); font-weight:700; }
+  .quotes { max-width:var(--measure); margin:4vh auto 0; }
+  .quotes blockquote { border-left:3px solid var(--red); padding:.2rem 0 .2rem 1.1rem; margin:0 0 1.6rem; font-size:.95em; line-height:1.6; }
+  .quotes cite { display:block; font-style:normal; color:var(--grey); font-size:.85em; margin-top:.4rem; }
+
+  /* ---------- ch6: three changes ---------- */
+  .three { max-width:52rem; margin:3vh auto; counter-reset:n; }
+  .three > div { display:grid; grid-template-columns:3.2rem 1fr; gap:1.2rem; padding:1.8rem 0; border-top:1px solid var(--line); }
+  .three > div::before { counter-increment:n; content:counter(n); color:var(--red); font-weight:800; font-size:2rem; line-height:1; }
+  .three > div:last-child { border-bottom:1px solid var(--line); }
+  .three h3 { font-size:1.15rem; font-weight:800; margin-bottom:.4rem; }
+  .three p { font-size:.98em; max-width:36rem; }
+
+  /* ---------- footer ---------- */
+  footer { border-top:1px solid var(--line); padding:10vh 6vw 12vh; text-align:center; }
+  .deck-link { display:inline-block; border:1.5px solid var(--ink); padding:1rem 2.2rem; color:inherit;
+               text-decoration:none; font-weight:700; transition:background .2s,color .2s; }
+  .deck-link:hover { background:var(--ink); color:#fff; }
+  footer .fin { margin-top:7vh; font-weight:600; color:var(--grey); }
+  footer .credits2 { margin-top:4vh; font-size:.82rem; color:var(--grey); line-height:2; }
+
+  .topbar { position:fixed; top:0; right:0; left:0; z-index:50; display:flex; justify-content:space-between; align-items:center;
+            padding:.7rem 1.2rem; pointer-events:none; mix-blend-mode:multiply; }
+  .topbar span { font-weight:800; letter-spacing:.3em; font-size:.8rem; }
+  .topbar .links { display:flex; gap:1.1rem; align-items:center; }
+  .topbar a { pointer-events:auto; color:var(--ink); text-decoration:none; font-weight:600; font-size:.85rem;
+              border-bottom:2px solid var(--red); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>POETIKS</span>
+  <div class="links">
+    <a href="../" lang="he" dir="rtl" title="לגרסה העברית">עברית</a>
+    <a href="../deck/">Full presentation →</a>
+  </div>
+</div>
+
+<!-- ═══════════ Opening ═══════════ -->
+<header class="hero">
+  <h1 class="en-title">POETIKS</h1>
+  <div class="he-title" lang="he">פה־אתיקה</div>
+  <p class="q">How was your way here, today?<br>By car, on foot, by bus or train — you may have noticed something along the way that caught your attention.</p>
+  <div class="credits">
+    Final project · Iddo Naim · 2025–26<br>
+    Studio: Arch. Yoram Shilo · Thesis advisor: Dr. Arch. Dikla Yizhar<br>
+    Azrieli School of Architecture, Tel Aviv University
+  </div>
+  <div class="scroll-cue">↓</div>
+</header>
+
+<!-- ═══════════ Chapter 1 — The Reading ═══════════ -->
+<section class="chapter" id="ch1">
+  <div class="ch-head reveal">
+    <div class="ch-num">1/6 · WHAT THE SYSTEM IS FOR</div>
+    <h2 class="ch-title">The Reading</h2>
+  </div>
+  <div class="flow">
+    <figure class="reveal" style="max-width:24rem; margin-inline:auto;">
+      <img src="../s04.webp" alt="Toilet-roll towers meme — Tel Aviv" loading="lazy">
+      <figcaption>The toilet-roll towers — a meme from the platform</figcaption>
+    </figure>
+    <p class="reveal">The moment you read the meme — you read the place. Our interpretations of where we live travel through countless channels today, and the meme is one of the fastest and most precise among them: it doesn't just add another data point about a place — it <em class="k">connects things</em> that weren't necessarily related before, and in that connection a new reading of space is revealed. In that personal reaction, I believe, lies real value for design.</p>
+    <p class="reveal">Out of this came the project's questions. In plain words: can memes be used as design tools? What is the architect's role in such a system — and what is the role of the memetic pattern?</p>
+    <div class="question-block reveal">How can a memetic-adaptive framework be established — one that enables a re-reading of existing spaces through humor and through principles of participation and circulation — while preserving enough room for action to create a multi-dimensional architecture that keeps changing and staying relevant over time?</div>
+    <p class="reveal">To test the question, two instruments were built. Both live online:</p>
+    <div class="products reveal">
+      <a class="card" href="https://memes.iddonaim.com/gallery" target="_blank" rel="noopener" data-live="platform">
+        <h3>Giggletecture</h3>
+        <p>A platform for making and sharing memes about the built environment — collecting the moments when people notice something in space and react to it. (Hebrew interface.)</p>
+        <span class="go">Visit the platform →</span>
+      </a>
+      <a class="card" href="https://cuboidstudio.vercel.app" target="_blank" rel="noopener" data-live="system">
+        <h3>The Translation System</h3>
+        <p>A system that takes those readings — the platform's memes — and uses them to discover new ways of seeing a space, opening a passage toward architectural action.</p>
+        <span class="go">Open the system →</span>
+      </a>
+    </div>
+    <figure class="reveal wide">
+      <img src="../s07.webp" alt="User – architect – platform – studio" loading="lazy">
+      <figcaption>The two instruments and the relationships between them: user · architect · platform · studio</figcaption>
+    </figure>
+    <p class="reveal">But… why memes, of all things? We know the meme as "funny pictures on the internet," yet a meme is far more than that: <em class="k">a cultural pattern passed between generations</em> — MEME = CULTURAL GENE, as Dawkins coined it in 1976. The pattern may change from one generation to the next, but it always keeps enough of its identity to remain itself — and for us to recognize the kinship between its appearances. The meme persists adaptively, through continuous change: a familiar pattern, a new context, a shifting image — and onward circulation.</p>
+    <figure class="reveal wide">
+      <img src="../s08.webp" alt="The Hitpa'el Building" loading="lazy">
+      <figcaption>"Binyan Hitpa'el" — a Hebrew grammar pun finds its building: the memetic reading meets the street</figcaption>
+    </figure>
+    <p class="reveal">And an inseparable part of the meme — and of this project — is humor. Humor lets us step outside our usual point of view for a moment and look at ourselves from the outside; it creates distance from the taken-for-granted and lets us see the familiar differently. In that sense, we can afford a little more humor in design and in the profession — after all, holding multiple ways of seeing is a natural, even essential, part of architectural work.</p>
+    <figure class="reveal wide">
+      <img src="../s10.webp" alt="Santiago Calatrava or steam iron" loading="lazy">
+      <figcaption>Santiago Calatrava or Hamilton Beach steam iron — humor as a reading mechanism</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ═══════════ Chapter 2 — Foundations ═══════════ -->
+<section class="chapter" id="ch2">
+  <div class="ch-head reveal">
+    <div class="ch-num">2/6 · PROCESS</div>
+    <h2 class="ch-title">Foundations of the System</h2>
+  </div>
+  <div class="flow">
+    <p class="reveal">The studio year began with a reading of Italo Calvino's <em class="k">Six Memos for the Next Millennium</em>. Calvino chose concepts to carry into the coming millennium, and would unpack each into contexts and relationships with its counter-concepts — and out of that work with word-pairs emerged the pair that accompanied the entire project:</p>
+    <figure class="reveal wide">
+      <img src="../s13.webp" alt="Word pairs — collection" loading="lazy">
+      <figcaption>The word pairs — from the studio work</figcaption>
+    </figure>
+    <p class="lead reveal">Absurd — Harmony.</p>
+    <p class="reveal">Harmony is an expression of the fitting way things join: it reveals relationships and contexts and lets them carry shared meaning. The absurd is the gap that appears when we go looking for that meaning — the moment when something that seemed self-evident suddenly asks to be seen from another direction. The pair lives in constant back-and-forth motion: joining, assembly, rupture, disassembly — and around again.</p>
+    <figure class="reveal wide">
+      <img src="../s15.webp" alt="Bernini — Lindsay Lohan" loading="lazy">
+      <figcaption>The Ecstasy of St Teresa (1652) / Lindsay Lohan (2007) — the meme moves through the same motion</figcaption>
+    </figure>
+    <p class="reveal">Speaking of memes and harmony: one can think of <em class="k">the classical canon itself as a meme</em> — just a slow one. Very slow. The classical orders and ancient proportions traveled across cultures and eras, taking on new appearances and meanings each time — and remained recognizable throughout. Today's meme has moved to the internet and reached a dizzying pace, crossing borders and cultures; and the internet has classics of its own.</p>
+    <div class="duo wide reveal">
+      <figure class="bare"><img src="../s16.webp" alt="The classics through the ages" loading="lazy"></figure>
+      <figure class="bare"><img src="../s17.webp" alt="Historicats — a feline timeline" loading="lazy"></figure>
+    </div>
+    <p class="reveal">Cats are internet classicism at its finest — and a small agent of chaos that accompanied the project as its natural context-breaker, elegantly. So when we were asked to choose an image for the word-pair, nothing seemed more fitting than <em class="k">cats on Escher</em>: the structure that looks impossible, that unsettles everything we know, becomes — for the cat — a perfectly legitimate place to climb. Humor produces another spatial reading here.</p>
+    <figure class="reveal" style="max-width:30rem; margin-inline:auto;">
+      <img src="../s18.webp" alt="Absurd — Harmony: cats on Escher" loading="lazy">
+    </figure>
+    <p class="reveal">From there it was a short way to cats on Escher — on the Moon, and soon the classics of animation received some unexpected guests too. Each time, the same operation repeats: <em class="k">a familiar pattern meets something foreign from outside, and the encounter produces a new possibility of reading.</em></p>
+    <div class="duo wide reveal">
+      <figure class="bare"><video src="../media1.mp4" muted loop playsinline preload="metadata" data-loopvid></video>
+        <figcaption>field-00 — the landing</figcaption></figure>
+      <figure class="bare"><video src="../media2.mp4" muted loop playsinline preload="metadata" data-loopvid></video>
+        <figcaption>field-01 — guests in the classic animation</figcaption></figure>
+    </div>
+    <p class="reveal">The cats were a first experiment in how a change of context changes a reading. The next step: could the operation itself become an <em class="k">architectural language</em>? From one cube and eight cutting solids — four chosen each time — seventy variations emerge: C(8,4)=70. The seventy solids are the system's fixed vocabulary, a kind of alphabet; add joining rules — faces cut by identical solids connect to each other — and the potential for a shared language appears.</p>
+    <figure class="reveal wide">
+      <video src="../media3.mp4" muted loop playsinline preload="metadata" data-loopvid></video>
+      <figcaption>The cube and the cutters — the birth of the vocabulary</figcaption>
+    </figure>
+    <figure class="reveal wide">
+      <img src="../s22.webp" alt="CUBOIDS — the seventy variations" loading="lazy">
+      <figcaption>CUBOIDS · 42mm · C(8,4)=70 — the seventy variations and their notations</figcaption>
+    </figure>
+    <p class="reveal">And once there is potential for a shared language — the work of translation can begin.</p>
+  </div>
+</section>
+
+<!-- ═══════════ Chapter 3 — The Translation ═══════════ -->
+<section class="chapter" id="ch3">
+  <div class="ch-head reveal">
+    <div class="ch-num">3/6 · THE TRANSLATION SYSTEM</div>
+    <h2 class="ch-title">The Translation</h2>
+  </div>
+  <div class="flow">
+    <p class="reveal">To move from the cube vocabulary to architectural action, very different kinds of knowledge have to be mediated — something must bridge the gap to the memes and the place, and to the speed at which they live. This is where the <em class="k">large language model (LLM)</em> comes in: a statistical-computational model trained on vast amounts of text, and through them exposed to an enormous space of cultural associations. Within the system it serves as <em class="k">"the Interpreter"</em> — a semantic interface.</p>
+    <figure class="reveal wide">
+      <img src="../s25.webp" alt="Language model as semantic interface" loading="lazy">
+      <figcaption>A language model as semantic interface — "the Interpreter"</figcaption>
+    </figure>
+    <p class="reveal">The language model receives the site's context, the memes themselves, and the language the system supplies; it performs a reading and proposes ways to phrase those relationships within the geometric language. This happens through a prompt binding the <em class="k">lexicon</em> — the units the system works with — to the <em class="k">grammar</em> defining the possible relationships and operations between them. The system holds two prompts, and both are open to user editing. Alongside the model runs plain deterministic code, executing the geometric operations and keeping the state of the assembly. And in the end — facing the language model and the machine — it is the <em class="k">user-designer</em> who defines the language of action, edits the proposals, chooses, and decides how to continue.</p>
+    <p class="lead reveal">The translation itself passes through five stages:</p>
+    <div class="stages reveal">
+      <div class="stage"><div class="tag">MAP</div>
+        <p>Begin from an existing place — a physical site. The system pulls a map, GIS data, plans, photographs and other layers of information, and lets you choose the point of view from which to approach the site.</p></div>
+      <div class="stage"><div class="tag">DE-CONTEXTUALIZE<small>CUT</small></div>
+        <p>The place is separated from its physical context, based on the relationships we identify within it.</p></div>
+      <div class="stage"><div class="tag">VIRTUALIZE</div>
+        <p>The reading becomes a field of possibilities — it receives a representation inside the system's language and can materialize in different appearances.</p></div>
+      <div class="stage"><div class="tag">MEMEFY</div>
+        <p>The moment the memes intervene: the memetic pattern meets the system and introduces a disruption, a change, or a new relationship.</p></div>
+      <div class="stage"><div class="tag">RE-CONTEXTUALIZE</div>
+        <p>The assembly returns to the place, the site, the plan — and from there, through the diagram, connects onward into the design process.</p></div>
+    </div>
+    <p class="modes-note reveal">The five stages map onto four modes in the system itself: MAP · ENCODE · EVOLUTION · DECODE.</p>
+    <figure class="reveal wide">
+      <img src="../s27.webp" alt="4 system modes ↔ 5 stages of translation" loading="lazy">
+    </figure>
+    <p class="lead reveal">And this is how it works in practice:</p>
+    <figure class="reveal wide demo-wrap">
+      <img src="../s28.webp" alt="Cuboid Studio — demo" id="demoPoster">
+      <video id="demoVideo" class="hidden" controls playsinline preload="none"></video>
+      <button class="playbtn" id="demoPlay" aria-label="Play demo">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+      <figcaption>The full demo — Cuboid Studio: Map → Encode → Evolution → Decode (4:39, Hebrew interface)</figcaption>
+    </figure>
+    <p class="reveal">In <strong>Map</strong>, the site and its active context are defined. In <strong>Encode</strong>, an image from the site is chosen, and the language model reads it through the lexicon and grammar — the reading rests on five axes: atmosphere, light, feeling, rhythm and structure, each with its reasoning, and it can be accepted, edited or rejected. In <strong>Evolution</strong>, the meme enters as the mechanism that adds a new factor: the system reads it in two passes — first an analysis of the meme itself, then in relation to the existing state — and proposes possibilities; the decision remains architectural. And in <strong>Decode</strong> — re-contextualization: the composition receives a two-dimensional representation drawn from the same geometric language. If the cubes were letters, these marks can be thought of as musical notes. The result is <em class="k">a diagram that can be read, edited, critiqued — and continued from</em>.</p>
+    <figure class="reveal wide demo-wrap">
+      <img src="../s29.webp" alt="Cuboid Studio — Decode" id="decodePoster">
+      <video id="decodeVideo" class="hidden" controls playsinline preload="none"></video>
+      <button class="playbtn" id="decodePlay" aria-label="Play Decode">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+      <figcaption>Decode — the assembly returns as two-dimensional marks on a sheet</figcaption>
+    </figure>
+    <p class="reveal">In <strong>Decode</strong>, every unit in the assembly — together with the changes chosen in <strong>Evolution</strong> — receives a two-dimensional glyph from the same geometric language. The notation is the two-dimensional reading of the active assembly, and it can be placed in relation to a plan, a photograph, or any other representation of the site: the marks, the relationships and the composition all remain editable. The result is <em class="k">a sheet that can be read, critiqued, and continued from</em>.</p>
+    <div class="duo wide reveal">
+      <figure class="bare"><img src="../s30.webp" alt="The notation over the plan — Nahalat Yitzhak" loading="lazy"><figcaption>The notation over the plan</figcaption></figure>
+      <figure class="bare"><img src="../s31.webp" alt="The notation over the aerial photograph — Nahalat Yitzhak" loading="lazy"><figcaption>The notation over the aerial photograph</figcaption></figure>
+    </div>
+    <figure class="reveal wide">
+      <img src="../s32.webp" alt="The notation over the floor plan — proposal" loading="lazy">
+      <figcaption>The same assembly, over the floor plan — a starting point for further design, not a final solution</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ═══════════ Chapter 4 — Outputs ═══════════ -->
+<section class="chapter" id="ch4">
+  <div class="ch-head reveal">
+    <div class="ch-num">4/6 · OUTPUTS</div>
+    <h2 class="ch-title">Nahalat Yitzhak and the System Section</h2>
+  </div>
+  <div class="flow">
+
+    <figure class="reveal wide bare">
+      <img src="../s34.webp" alt="Nahalat Yitzhak — three street photographs and a meme" loading="lazy">
+    </figure>
+    <p class="reveal">Nahalat Yitzhak, Tel Aviv, is where the method was tested as a continuation of design. It is the point where the Bursa's towers meet the old streets: high-rises climbing above a street of garages and workshops, a corner everyone passes through and few stop in. The process begins from existing readings of the place and the ways they appear to the people who experience it — the photograph, the site, and the memes hung upon it. The readings enter the system, receive a response, and consolidate into a sheet that shows what was read, what was translated, which changes were accepted and why.</p>
+    <figure class="reveal wide">
+      <img src="../s35.webp" alt="The project sheet — 16 Nahalat Yitzhak" loading="lazy">
+      <figcaption>The decision sheet — 16 Nahalat Yitzhak St.: images from the site · the memes that intervened · a spatial reading · the assembly · 19 cubes, 3 memes, generation 2</figcaption>
+    </figure>
+
+    <p class="lead reveal">The System Section — who does what</p>
+    <p class="reveal">Everything we just saw can also be read as a <em class="k">system section</em>. Just as an architectural section reveals relationships the façade conceals, the system section reveals who feeds in material, who reads, who proposes, who executes and who decides. The site, the GIS data and the participants supply sources of different kinds. The language model proposes a semantic reading and a translation within the lexicon and grammar. The code executes the geometric operations and keeps the assembly's state. The architect defines the language of action, edits the proposals, and rules on which of them enter the active state — the human <strong>Apply</strong> is the system's point of commitment.</p>
+    <figure class="reveal wide">
+      <img src="../s36.webp" alt="System Section — source · translation · output" loading="lazy">
+      <figcaption>SYSTEM SECTION — sources · translation · outputs: every line is a crossing that can be traced</figcaption>
+    </figure>
+    <p class="reveal">Along the whole sequence a <em class="k">trace</em> is kept: which source a reading came from, what proposal was generated, what changed, what was chosen and what became part of the assembly. The section displays this distribution of authority — and the possibility of critiquing the translation after it has taken place.</p>
+  </div>
+</section>
+
+<!-- ═══════════ Chapter 5 — Theoretical Foundations ═══════════ -->
+<section class="chapter" id="ch5">
+  <div class="ch-head reveal">
+    <div class="ch-num">5/6 · THEORETICAL FOUNDATIONS</div>
+    <h2 class="ch-title">Who Gave the System Its Operations</h2>
+  </div>
+  <div class="flow">
+    <p class="reveal">Here the conversion problem appears. The meme operates in a cultural space of images, texts and contexts; the design process operates in other spaces of representation — maps, models, diagrams, plans and decisions. For the memetic reading to take part in design, the relationships it carries must cross into a representational space where work can continue. Each of the following sources defined <em class="k">an operation the system had to know how to perform</em>.</p>
+    <div class="thinkers reveal">
+      <div class="thinker"><div class="who">Aristotle<small>Poetics · Mimesis</small></div>
+        <p><span class="op">To read.</span> Mimesis is an act of representation, selection and arrangement: certain relationships take form and something becomes legible. The system selects and arranges the relationships read in the meme and gives them a new representation. Comedy, in Aristotle, uses the ridiculous and the incongruous to locate a gap. And from here, the name: <strong>Poetics</strong> → <em>Peh</em> (Hebrew for "mouth") + Ethics → <span lang="he" dir="rtl">פה־אתיקה</span> → POETIKS.</p></div>
+      <div class="thinker"><div class="who">Simon Critchley<small>On Humour, 2002</small></div>
+        <p><span class="op">To spot a gap.</span> Humor creates the distance that lets us see ourselves from outside and critique the taken-for-granted. The joke tears a hole in our expectation of the world — and through that hole appears the pattern we had stopped seeing.</p></div>
+      <div class="thinker"><div class="who">Bernard Tschumi<small>Manhattan Transcripts, 1981</small></div>
+        <p><span class="op">To translate a relationship.</span> The disjunction between space, event and movement becomes, in Tschumi, architectural material. So when a meme reads an entrance as a barrier, a corridor as a meeting place, or an empty lot as a programmatic opportunity — it is pointing at a relationship that can be translated into spatial action.</p></div>
+      <div class="thinker"><div class="who">Jeremy Till<small>Architecture Depends, 2009</small></div>
+        <p><span class="op">To hold the mess.</span> Till widens the working material to the mess of people, time, politics and use. The multiplicity of readings is part of the context within which design operates — not noise to be filtered out.</p></div>
+      <div class="thinker"><div class="who">Gilles Deleuze<small>Difference and Repetition, 1968</small></div>
+        <p><span class="op">To hold possibilities.</span> The virtual is a fully real field of possibilities that have not yet been actualized in a particular form. A meme pattern exists through its changing appearances; a diagram holds relationships that can materialize in different ways. The assembly in Cuboid Studio is such a field. Everything changes — and nothing changes.</p></div>
+      <div class="thinker"><div class="who">Dawkins · Shifman<small>The Selfish Gene, 1976 · Memes in Digital Culture, 2013</small></div>
+        <p><span class="op">To produce variations.</span> The meme as a family generated through change, remix and participation: pattern, variation, circulation. The single appearance is not the unit — the relationship between appearances is.</p></div>
+      <div class="thinker"><div class="who">Mario Carpo<small>The Second Digital Turn, 2017</small></div>
+        <p><span class="op">To enable decision.</span> In the second digital turn, designing the process matters more than designing the object. The designer also designs a system: a vocabulary, assembly rules and points of decision. In that sense — <em class="k">the prompt is a design document</em>.</p></div>
+    </div>
+    <p class="reveal">Translation always involves choice: what carries weight, what is kept, what changes and what is lost. The system therefore preserves the source, the reading, the proposal, the change and the decision — so the passage between cultural language, geometric language and architectural diagram can be followed.</p>
+    <div class="quotes reveal">
+      <blockquote>“The Virtual is fully real in so far as it is virtual.” “The task of life is to make all these repetitions coexist in a space in which difference is disturbed.”<cite>Gilles Deleuze, Difference and Repetition, 1968</cite></blockquote>
+      <blockquote>“Architecture is not simply about space and form, but also about event, action and what happens in space.”<cite>Bernard Tschumi, Manhattan Transcripts, 1981</cite></blockquote>
+      <blockquote>“Mess is the Law.”<cite>Jeremy Till, Architecture Depends, 2009</cite></blockquote>
+      <blockquote>“Jokes tear holes in our usual predictions about the empirical world. We might say that humour is produced by a disjunction … between expectation and actuality.”<cite>Simon Critchley, On Humour, 2002</cite></blockquote>
+      <blockquote>“In the second digital turn, the design of processes matters more than the design of objects.”<cite>Mario Carpo, The Second Digital Turn, 2017</cite></blockquote>
+      <blockquote>“Instead of saying ‘I had a bad date and I feel miserable and lonely,’ one can simply paste the ‘Forever Alone’ character.”<cite>Limor Shifman, Memes in Digital Culture, 2013</cite></blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ Chapter 6 — Summary ═══════════ -->
+<section class="chapter" id="ch6">
+  <div class="ch-head reveal">
+    <div class="ch-num">6/6 · SUMMARY</div>
+    <h2 class="ch-title">What Changes for Architecture</h2>
+  </div>
+  <div class="flow">
+    <div class="three reveal">
+      <div><div><h3>Memes become a layer of context</h3>
+        <p>Humor, association, critique, cultural memory and unexpected use join sun, wind, movement, regulation and existing programs. The conversion between representational spaces lets these readings take their place inside the design process.</p></div></div>
+      <div><div><h3>Critique gains an operation inside the system</h3>
+        <p>One can ask which gap a meme identifies, and which relationship it inverts, amplifies or shifts. The reading acts on the assembly and produces possibilities that can be compared, chosen and developed.</p></div></div>
+      <div><div><h3>Translation becomes something that can be traced</h3>
+        <p>The source, the reading, the language model's proposal, the computational operation and the human decision are kept as a sequence. The values driving the design find expression in the lexicon, the grammar, the prompt and the decision points — and the designer can critique both the result and the path that led to it.</p></div></div>
+    </div>
+    <p class="reveal">And to return to the way you arrived here: the project began with the question of how the ways people see the city, talk about it and laugh about it could enter its design. Over the year, the way passed between these spaces — from the cats and the physical models, through the meme platform, to the language model and the computational system. At every stage the same question returned: <em class="k">how does a cultural reading become material you can build with</em>, without losing the ability to see where it came from and how it changed.</p>
+    <p class="reveal">POETIKS is a proposal for a way of working: a platform where cultural readings surface, a translation regime that tracks what was chosen, changed and lost, a geometric language that holds relationships, and tools for examining, disassembling, reassembling and continuing. People already use space, interpret it and tell stories about it; memes are part of those stories. If architecture is becoming computational, then its context, its critique and its cultural interpretation deserve computational tools as well. The tools widen the space of reading and action; <em class="k">the architectural decision remains ours</em>.</p>
+    <figure class="reveal" style="max-width:30rem; margin-inline:auto;">
+      <img src="../s40.webp" alt="Thank you — the cubes on the window, and the cat" loading="lazy">
+      <figcaption>Thank you.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ═══════════ Closing ═══════════ -->
+<footer>
+  <a class="deck-link" href="../deck/">Watch the full presentation — 40 slides, with the spoken text (Hebrew) →</a>
+  <p class="fin">Everything changes — and nothing changes.</p>
+  <p class="credits2">
+    POETIKS · פה־אתיקה — Final project, 2025–26 · Iddo Naim<br>
+    Studio: Arch. Yoram Shilo · Thesis advisor: Dr. Arch. Dikla Yizhar · Azrieli School of Architecture, Tel Aviv University
+  </p>
+</footer>
+
+<script src="../hls.min.js"></script>
+<script>
+// reveals
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }), {threshold:.12});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+// loop videos play only in view
+const vio = new IntersectionObserver(es => es.forEach(e => {
+  const v = e.target; if (e.isIntersecting){ v.play().catch(()=>{}); } else v.pause();
+}), {threshold:.3});
+document.querySelectorAll('video[data-loopvid]').forEach(v => vio.observe(v));
+// demo (HLS)
+function wireHls(vidId, btnId, posterId, src){
+  const v = document.getElementById(vidId), b = document.getElementById(btnId), p = document.getElementById(posterId);
+  b.addEventListener('click', () => {
+    if (!v.dataset.wired){
+      if (v.canPlayType('application/vnd.apple.mpegurl')) v.src = src;
+      else if (window.Hls && Hls.isSupported()) { const h = new Hls({maxBufferLength:20}); h.loadSource(src); h.attachMedia(v); }
+      else v.src = src;
+      v.dataset.wired = '1';
+    }
+    p.style.display='none'; b.style.display='none'; v.classList.remove('hidden'); v.play();
+  });
+}
+wireHls('demoVideo','demoPlay','demoPoster','../media4.m3u8');
+wireHls('decodeVideo','decodePlay','decodePoster','../media5.m3u8');
+</script>
+</body>
+</html>
