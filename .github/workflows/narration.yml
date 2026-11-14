@@ -7,6 +7,11 @@ on:
         description: 'Comma-separated slide numbers to (re)generate; empty = all missing'
         required: false
         default: ''
+      force:
+        description: 'Regenerate every slide even if its mp3 exists'
+        type: boolean
+        required: false
+        default: false
       model:
         description: 'ElevenLabs model id'
         required: false
@@ -28,9 +33,11 @@ jobs:
           ELEVENLABS_VOICE_ID: ${{ secrets.ELEVENLABS_VOICE_ID }}
           MODEL: ${{ inputs.model }}
           ONLY: ${{ inputs.only }}
+          FORCE: ${{ inputs.force }}
         run: |
           args=(--model "$MODEL")
           if [ -n "$ONLY" ]; then args+=(--only "$ONLY"); fi
+          if [ "$FORCE" = "true" ]; then args+=(--force); fi
           python3 deck/make-audio.py "${args[@]}"
 
       - name: Require 40 mp3 files
