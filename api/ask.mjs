@@ -2,7 +2,10 @@
 import catalogue from '../hub/ask/catalogue.json' with { type: 'json' };
 import {lookup} from '../hub/ask/lookup.mjs';
 
-export default function ask(req, res) {
+import {reserve} from '../lib/quota.mjs';
+import {aiAnswer} from '../lib/answer.mjs';
+
+export default async function ask(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
@@ -16,5 +19,14 @@ export default function ask(req, res) {
   if (typeof question !== 'string' || !question.trim() || question.length > 1200) {
     return res.status(400).json({error:'Enter a question between 1 and 1,200 characters.'});
   }
-  return res.status(200).json(lookup(question.trim(), catalogue));
+  const query = question.trim();
+  const notes = reason => ({...lookup(query,catalogue),reason});
+  if (!process.env.OPENAI_API_KEY || !process.env.BLOB_READ_WRITE_TOKEN) return res.status(200).json(notes('lookup-only'));
+  if (/experiment|ניסוי|ניסויים/i.test(query)) return res.status(200).json(notes('outside-catalogue'));
+  let slot;
+  try { slot = await reserve(); }
+  catch { return res.status(200).json(notes('counter-unavailable')); }
+  if (!slot.admitted) return res.status(200).json({...notes('daily-limit'),usage:slot.usage});
+  try { return res.status(200).json({...await aiAnswer(query,catalogue),usage:slot.usage}); }
+  catch { return res.status(200).json({...notes('ai-unavailable'),usage:slot.usage}); }
 }

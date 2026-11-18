@@ -24,4 +24,3 @@
 .ask-tip{margin-block:1rem 0;color:#514d44;font-size:.875rem}
 body:has(#ask-poetiks[open]){overflow:hidden}
 @media(max-width:390px){.ask-row{flex-wrap:wrap}.ask-row input{flex-basis:100%}}
-.ask-refine{justify-self:start;padding:.5rem .75rem;border:1px solid var(--ink);background:var(--paper);color:var(--ink)}
