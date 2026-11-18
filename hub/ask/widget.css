@@ -1,0 +1,27 @@
+#ask-poetiks{margin:auto;width:min(38rem,calc(100% - 1.6rem));max-height:min(84dvh,52rem);
+  padding:clamp(1rem,4vw,2rem);color:var(--ink);background:var(--paper);border:2px solid var(--ink);
+  box-shadow:6px 6px 0 var(--ink);overscroll-behavior:contain;font-family:Arimo,Arial,sans-serif}
+#ask-poetiks::backdrop{background:rgb(20 20 20 / 58%)}
+#ask-poetiks h2{font:700 clamp(1.35rem,3vw,2rem)/1.1 Rubik,Arial,sans-serif}
+.ask-head{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+#ask-poetiks button,#ask-poetiks input{font:inherit}
+#ask-poetiks button{cursor:pointer}
+.ask-close{font-size:1.4rem!important;line-height:1;background:white;border:2px solid var(--ink);min-width:2.5rem;min-height:2.5rem}
+#ask-poetiks form{margin:1.1rem 0}
+#ask-poetiks label{display:block;margin-block-end:.4rem}
+.ask-row{display:flex;gap:.4rem}
+.ask-row input{min-width:0;flex:1;padding:.7rem;border:2px solid var(--ink);background:white;color:var(--ink)}
+.ask-row button{font-weight:bold!important;background:var(--red);color:white;border:2px solid var(--ink);padding:.6rem .9rem}
+.ask-samples{display:flex;gap:.4rem;flex-wrap:wrap;margin-block:0 1rem}
+.ask-samples button{background:transparent;color:var(--ink);border:1px solid #827d72;padding:.38rem .6rem;font-size:.88rem!important}
+#ask-poetiks :focus-visible{outline:3px solid var(--red);outline-offset:3px}
+#ask-result{display:grid;gap:.8rem;line-height:1.5;overflow-wrap:anywhere}
+#ask-result article{background:white;border-inline-start:4px solid var(--red);padding:.8rem 1rem}
+#ask-result details{margin-block-start:.35rem}
+#ask-result summary{cursor:pointer;font-size:.9rem}
+#ask-result a{color:#98171b;text-decoration:underline;text-underline-offset:.16em}
+#ask-result pre{direction:ltr;text-align:left;white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.4 monospace;margin-block:.4rem}
+.ask-tip{margin-block:1rem 0;color:#514d44;font-size:.875rem}
+body:has(#ask-poetiks[open]){overflow:hidden}
+@media(max-width:390px){.ask-row{flex-wrap:wrap}.ask-row input{flex-basis:100%}}
+.ask-refine{justify-self:start;padding:.5rem .75rem;border:1px solid var(--ink);background:var(--paper);color:var(--ink)}

@@ -26,6 +26,7 @@ marker strokes. Hebrew captions are DRAFTS pending owner approval.
 <title>פה־אתיקה · POETIKS</title>
 <meta name="description" content="פה־אתיקה: תזה בארכיטקטורה שלוקחת ממים ברצינות. B.Arch thesis, TAU 2026.">
 <link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="/ask/widget.css">
 <style>
 :root{
   --red:#d2232a;
@@ -238,6 +239,7 @@ body.past-title #chip{opacity:1}
       <div class="latin" lang="en">POETIKS</div>
       <p class="sub">תזה בארכיטקטורה שלוקחת ממים ברצינות.<br>אוניברסיטת תל אביב, 2026.</p>
       <p class="en" lang="en">a B.Arch thesis that takes memes seriously</p>
+      <a class="go secondary" href="#ask" aria-haspopup="dialog">שאלו את POETIKS · Ask</a>
     </div>
     <div class="cue">גללו. זה מסביר את עצמו.<span class="arr">↓</span></div>
   </section>
@@ -328,6 +330,7 @@ body.past-title #chip{opacity:1}
       <div class="strip"><img class="wide" src="assets/studio_app.jpg" alt="ממשק האפליקציה — בחירת קובייה ומם"></div>
       <p class="en" lang="en">A live generative studio. One cube, endless takes.</p>
       <a class="go" href="https://cuboidstudio.vercel.app">לאפליקציה ←</a>
+      <a class="go secondary" href="#ask" aria-haspopup="dialog">איך זה עובד?</a>
     </div>
   </section>
 
@@ -345,6 +348,7 @@ body.past-title #chip{opacity:1}
         <a href="https://memes.iddonaim.com/gallery">הגלריה</a>
         <a href="https://cuboidstudio.vercel.app">האפליקציה</a>
         <a href="/seventy/">הקלפים</a>
+        <a href="#ask" aria-haspopup="dialog">שאלו את POETIKS</a>
         <a href="https://poetiks-agency-atlas.iddonaim.chatgpt.site">התזה</a>
       </div>
       <p class="handle"><a href="https://www.instagram.com/iddonaim"><bdi dir="ltr"><b>@iddonaim</b></bdi></a> · <a href="mailto:studio@iddonaim.com"><bdi dir="ltr">studio@iddonaim.com</bdi></a></p>
@@ -352,6 +356,24 @@ body.past-title #chip{opacity:1}
     </div>
   </section>
 </main>
+
+<dialog id="ask-poetiks" aria-labelledby="ask-heading">
+  <div class="ask-head"><h2 id="ask-heading">שאלו את POETIKS <bdi lang="en">/ Ask POETIKS</bdi></h2>
+    <button class="ask-close" type="button" aria-label="סגירה / Close">×</button>
+  </div>
+  <form id="ask-form">
+    <label for="ask-question">שאלה בעברית או באנגלית · <span lang="en">Ask in English or Hebrew</span></label>
+    <div class="ask-row"><input id="ask-question" name="question" dir="auto" maxlength="1200" required autofocus autocomplete="off">
+      <button type="submit">שאלו / Ask</button></div>
+  </form>
+  <div class="ask-samples">
+    <button type="button">איך המערכת עובדת?</button>
+    <button type="button" lang="en" dir="ltr">Which Decode exports include the underlay?</button>
+  </div>
+  <div id="ask-result" aria-live="polite" aria-atomic="true" dir="auto"></div>
+  <p class="ask-tip">מתוך מפות המאגרים ותוצרי הפרויקט · <span lang="en">From the project’s repo maps and outputs</span></p>
+</dialog>
+<script type="module" src="/ask/widget.mjs"></script>
 
 <script>
 (function(){
