@@ -20,6 +20,11 @@
 #ask-result details{margin-block-start:.35rem}
 #ask-result summary{cursor:pointer;font-size:.9rem}
 #ask-result a{color:#98171b;text-decoration:underline;text-underline-offset:.16em}
+.ask-next{display:grid;justify-items:start;gap:.35rem;margin-block-start:.2rem}
+.ask-next span{font-size:.85rem;color:#514d44}
+.ask-next button{min-height:2.75rem;padding:.5rem .85rem;background:white;color:var(--ink);
+  border:2px solid var(--ink);text-align:start;line-height:1.4}
+.ask-next button:hover{border-color:var(--red)}
 #ask-result pre{direction:ltr;text-align:left;white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.4 monospace;margin-block:.4rem}
 .ask-tip{margin-block:1rem 0;color:#514d44;font-size:.875rem}
 body:has(#ask-poetiks[open]){overflow:hidden}
