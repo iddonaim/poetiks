@@ -1,9 +1,11 @@
 import {lookup} from './lookup.mjs';
+import {suggestFollowUp} from './follow-up.mjs';
 
 const dialog = document.querySelector('#ask-poetiks');
 const field = document.querySelector('#ask-question');
 const result = document.querySelector('#ask-result');
 const form = document.querySelector('#ask-form');
+const recentQuestions = [];
 let catalogue;
 let generation = 0;
 let pending;
@@ -32,9 +34,27 @@ dialog.querySelector('.ask-close').addEventListener('click', () => dialog.close(
 dialog.addEventListener('close', () => {
   generation++;
   pending?.abort();
+  if (form.querySelector('button').disabled) result.replaceChildren();
   if (location.hash === '#ask') history.replaceState(null, '', location.pathname + location.search);
   (opener || document.querySelector('a[href="#ask"]')).focus({preventScroll:true});
 });
+function askSuggestion(button) {
+  field.value = button.textContent;
+  form.requestSubmit();
+}
+function showFollowUp(points, language) {
+  const next = document.createElement('div');
+  next.className = 'ask-next';
+  const label = element('span',language === 'he' ? 'שאלת המשך' : 'Ask next');
+  const button = element('button',suggestFollowUp(points,recentQuestions,language));
+  button.type = 'button';
+  button.addEventListener('click', () => {
+    result.focus();
+    askSuggestion(button);
+  });
+  next.append(label,button);
+  result.append(next);
+}
 function showPoints(points, he) {
   result.replaceChildren();
   for (const point of points) {
@@ -63,12 +83,15 @@ form.addEventListener('submit',async e => {
   if (form.querySelector('button').disabled) return;
   const sendButton = form.querySelector('button');
   sendButton.disabled = true;
+  recentQuestions.push(question);
+  if (recentQuestions.length > 6) recentQuestions.shift();
   const run = ++generation;
   pending?.abort();
   const he = /[א-ת]/.test(question);
   result.lang = he ? 'he' : 'en';
   result.dir = he ? 'rtl' : 'ltr';
   result.textContent = he ? 'מחפש במקורות…' : 'Checking the sources…';
+  let points = [];
   try {
     const controller = new AbortController();
     pending = controller;
@@ -88,7 +111,7 @@ form.addEventListener('submit',async e => {
       answer = {...lookup(question,catalogue),reason:'lookup-only'};
     }
     if (run !== generation) return;
-    const {points} = answer;
+    points = answer.points;
     if (!points.length) {
       result.textContent = he ? 'לא נמצאה תשובה במקורות שנבחרו. אפשר לשאול על מצב עבודה, מאגר או תוצר מסוים.' :
         'I couldn’t find an answer in the selected sources. Try naming a mode, repository or output.';
@@ -101,10 +124,13 @@ form.addEventListener('submit',async e => {
       'הגענו למכסת 50 שאלות ה־AI להיום. החיפוש במקורות ממשיך לפעול.' :
       'All 50 AI questions have been used today. Source lookup is still available.'));
   } catch {
+    points = [];
     if (run === generation) result.textContent = he ? 'לא ניתן לטעון את המקורות. נסו שוב.' : 'The sources could not load. Please try again.';
-  } finally { sendButton.disabled = false; }
+  } finally {
+    sendButton.disabled = false;
+    if (run === generation) showFollowUp(points,result.lang);
+  }
 });
 dialog.querySelectorAll('.ask-samples button').forEach(button => button.addEventListener('click', () => {
-  field.value = button.textContent;
-  form.requestSubmit();
+  askSuggestion(button);
 }));

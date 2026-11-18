@@ -79,3 +79,28 @@ test('generated answers require a quote from every cited passage',async t=>{
   assert.ok(catalogue.sources.S30.text.includes(answer.points[0].sources[0].text));
   await assert.rejects(aiAnswer('Decode export?',catalogue),/Unverified citation/);
 });
+
+import {suggestFollowUp} from '../hub/ask/follow-up.mjs';
+
+test('follow-ups relate to the cited source and skip recently asked questions', () => {
+  const points = [{sources:[{id:'S23'}]}];
+  const next = suggestFollowUp(points,[],'en');
+  assert.match(next,/70 cube variations/);
+  assert.notEqual(suggestFollowUp(points,[next.toUpperCase().replace('?', '')],'en'),next);
+});
+
+test('every source and the no-evidence state offer answerable follow-ups in both languages', () => {
+  for (const language of ['en','he']) {
+    for (const id of [null,...Object.keys(catalogue.sources)]) {
+      const points = id ? [{sources:[{id}]}] : [];
+      const asked = [];
+      for (let i = 0; i < 8; i++) {
+        const next = suggestFollowUp(points,asked,language);
+        assert.ok(!asked.slice(-6).includes(next));
+        assert.equal(/[א-ת]/.test(next),language === 'he');
+        assert.ok(lookup(next,catalogue).points.length,next);
+        asked.push(next);
+      }
+    }
+  }
+});
