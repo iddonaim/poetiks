@@ -4,6 +4,7 @@ import {lookup} from '../hub/ask/lookup.mjs';
 
 import {reserve} from '../lib/quota.mjs';
 import {aiAnswer} from '../lib/answer.mjs';
+import {notifyUsage} from '../lib/usage-email.mjs';
 
 export default async function ask(req, res) {
   res.setHeader('Cache-Control', 'no-store');
@@ -27,6 +28,9 @@ export default async function ask(req, res) {
   try { slot = await reserve(); }
   catch { return res.status(200).json(notes('counter-unavailable')); }
   if (!slot.admitted) return res.status(200).json({...notes('daily-limit'),usage:slot.usage});
-  try { return res.status(200).json({...await aiAnswer(query,catalogue),usage:slot.usage}); }
-  catch { return res.status(200).json({...notes('ai-unavailable'),usage:slot.usage}); }
+  const [answer] = await Promise.all([
+    aiAnswer(query,catalogue).catch(() => notes('ai-unavailable')),
+    notifyUsage(slot.usage),
+  ]);
+  return res.status(200).json({...answer,usage:slot.usage});
 }
